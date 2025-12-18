@@ -17,10 +17,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->unsignedInteger("duration_week");
             $table->string("instrument_name");
-            $table->string('instrument_image');
-            $table->float("rating");
+            $table->string('instrument_image')->nullable();
+            $table->float("rating")->default(0);
             $table->unsignedInteger("payment");
-            $table->unsignedInteger("room_number");
+            $table->unsignedInteger("room_number")->nullable();
             $table->enum("course_level",['beginner','intermediate','advanced']);
             $table->timestamps();
         });

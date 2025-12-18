@@ -16,9 +16,8 @@ class Course extends Model
         'duration_week',
         'instrument_name',
         'instrument_image',
-        'rating',
         'payment',
-        'room_number',
         'course_level',
     ];
+
 }

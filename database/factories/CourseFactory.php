@@ -23,7 +23,7 @@ class CourseFactory extends Factory
             'instrument_name' => $this->faker->randomElement([
                 'Guitar', 'Piano', 'Violin', 'Drums', 'Flute'
             ]),
-            'instrument_image' => 'instruments/default.png',
+            'instrument_image' => 'courses/sample' . $this->faker->numberBetween(1, 2) . '.jpg', // fixed
             'rating' => $this->faker->randomFloat(1, 3.5, 5.0),
             'payment' => $this->faker->numberBetween(3000, 15000),
             'room_number' => $this->faker->numberBetween(101, 120),
@@ -32,4 +32,5 @@ class CourseFactory extends Factory
             ]),
         ];
     }
+
 }
