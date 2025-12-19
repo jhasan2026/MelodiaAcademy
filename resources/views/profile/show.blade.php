@@ -22,14 +22,18 @@
 {{--    </div>--}}
 
     <section class="relative pt-40 pb-24">
+        @if($user->role === 'student' | $user->role === 'instructor')
         <img src="https://pagedone.io/asset/uploads/1705473378.png" alt="cover-image" class="w-full absolute top-0 left-0 z-0 h-60 object-cover">
+        @endif
         <div class="w-full max-w-7xl mx-auto px-6 md:px-8">
-            <div class="flex items-center justify-center sm:justify-start relative z-10 mb-5">
-                <img src="{{ $profile && $profile->profile_pic ? asset($profile->profile_pic) : asset('images/default.png') }}" alt="user-avatar-image" class="h-48 w-48 border-4 border-solid border-white rounded-full object-cover">
-            </div>
+            @if($user->role === 'student' | $user->role === 'instructor')
+                <div class="flex items-center justify-center sm:justify-start relative z-10 mb-5">
+                    <img src="{{ $profile && $profile->profile_pic ? asset($profile->profile_pic) : asset('images/default.png') }}" alt="user-avatar-image" class="h-48 w-48 border-4 border-solid border-white rounded-full object-cover">
+                </div>
+            @endif
             <div class="flex flex-col sm:flex-row max-sm:gap-5 items-center justify-between mb-5">
                 <div class="block">
-                    <h3 class="font-manrope font-bold text-4xl text-white mb-1">Emma Smith</h3>
+                    <h3 class="font-manrope font-bold text-4xl text-white mb-1">{{ $user->first_name }} &nbsp;  {{ $user->last_name }} </h3>
 {{--                    <p class="font-normal text-base leading-7 text-gray-500">Los Anbeles, California</p>--}}
                 </div>
                 <button
@@ -44,15 +48,17 @@
                     </span>
                 </button>
             </div>
-            <div class="flex flex-col lg:flex-row max-lg:gap-5 items-center justify-between py-0.5">
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('profile.edit') }}"
-                        class="py-3.5 px-5 rounded-full bg-indigo-600 text-white font-semibold text-base leading-7 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-100 hover:bg-indigo-700">Edit
-                        Profile
-                    </a>
+            @if($user->role === 'student' | $user->role === 'instructor')
+                <div class="flex flex-col lg:flex-row max-lg:gap-5 items-center justify-between py-0.5">
+                    <div class="flex items-center gap-4">
+                        <a href="{{ route('profile.edit') }}"
+                            class="py-3.5 px-5 rounded-full bg-indigo-600 text-white font-semibold text-base leading-7 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-100 hover:bg-indigo-700">Edit
+                            Profile
+                        </a>
 
+                    </div>
                 </div>
-            </div>
+            @endif
 
             <div class="max-w-7xl mt-8">
                 <div class="bg-white overflow-hidden shadow rounded-lg border">

@@ -6,16 +6,19 @@
             @csrf
             @method('PATCH')
         <div class="w-full max-w-7xl mx-auto px-6 md:px-8">
-            <div class="flex items-end justify-center sm:justify-start relative z-10 mb-5">
-                <img src="{{ $profile && $profile->profile_pic ? asset($profile->profile_pic) : asset('images/default.png') }}" alt="user-avatar-image" class="h-48 w-48 border-4 border-solid border-white rounded-full object-cover">
-                <div>
-                    <label for="profile_pic">
-                        <input type="file" name="profile_pic" id="profile_pic" class="hidden">
-                        <img class="h-8 w-8 cursor-pointer" src="{{ asset('images/camera.png') }}" alt="Upload">
-                    </label>
 
+            @if($user->role === 'student' | $user->role === 'instructor')
+                <div class="flex items-end justify-center sm:justify-start relative z-10 mb-5">
+                    <img src="{{ $profile && $profile->profile_pic ? asset($profile->profile_pic) : asset('images/default.png') }}" alt="user-avatar-image" class="h-48 w-48 border-4 border-solid border-white rounded-full object-cover">
+                    <div>
+                        <label for="profile_pic">
+                            <input type="file" name="profile_pic" id="profile_pic" class="hidden">
+                            <img class="h-8 w-8 cursor-pointer" src="{{ asset('images/camera.png') }}" alt="Upload">
+                        </label>
+
+                    </div>
                 </div>
-            </div>
+            @endif
 
 
             <div class="flex flex-col sm:flex-row max-sm:gap-5 items-center justify-between mb-5">
@@ -34,14 +37,17 @@
                     </span>
                 </button>
             </div>
-            <div class="flex flex-col lg:flex-row max-lg:gap-5 items-center justify-between py-0.5">
-                <div class="flex items-center gap-4">
-                    <button type="submit"
-                       class="py-3.5 px-5 rounded-full bg-indigo-600 text-white font-semibold text-base leading-7 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-100 hover:bg-indigo-700">Save Profile
-                    </button>
+            @if($user->role === 'student' | $user->role === 'instructor')
+                <div class="flex flex-col lg:flex-row max-lg:gap-5 items-center justify-between py-0.5">
 
+                    <div class="flex items-center gap-4">
+                        <button type="submit"
+                           class="py-3.5 px-5 rounded-full bg-indigo-600 text-white font-semibold text-base leading-7 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-100 hover:bg-indigo-700">Save Profile
+                        </button>
+
+                    </div>
                 </div>
-            </div>
+            @endif
 
             <div class="max-w-7xl mt-8">
                 <div class="bg-white overflow-hidden shadow rounded-lg border">
