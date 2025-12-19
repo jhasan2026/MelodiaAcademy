@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
+    // Get profile current log in user
     protected function getProfile()
     {
         $user = Auth::user();
@@ -14,8 +15,12 @@ class ProfileController extends Controller
 
         if ($user->role === 'student') {
             $profile = $user->student;
-        } elseif ($user->role === 'instructor') {
+        }
+        elseif ($user->role === 'instructor') {
             $profile = $user->instructor;
+        }
+        elseif ($user->role === 'admin') {
+            $profile = $user->admin;
         }
 
         return [$user, $profile];
@@ -59,8 +64,8 @@ class ProfileController extends Controller
             ]);
 
             $profile->update([
-                'gender'        => $request->gender,
-                'date_of_birth' => $request->date_of_birth,
+                'gender'        => $request->input('gender') ?: null,           // convert empty string to null
+                'date_of_birth' => $request->input('date_of_birth') ?: null,    // convert empty string to null
             ]);
         } elseif ($user->role === 'instructor') {
             $request->validate([
@@ -70,9 +75,9 @@ class ProfileController extends Controller
             ]);
 
             $profile->update([
-                'bio'             => $request->bio,
-                'specialization'  => $request->specialization,
-                'experience_years'=> $request->experience_years,
+                'bio'             => $request->input('bio'),
+                'specialization'  => $request->input('specialization'),
+                'experience_years'=> $request->input('experience_years'),
             ]);
         }
 
@@ -94,4 +99,5 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.show')->with('success', 'Profile updated successfully.');
     }
+
 }

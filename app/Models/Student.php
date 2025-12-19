@@ -19,4 +19,9 @@ class Student extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected $casts = [
+        'gender' => 'string',
+    ];
+
 }
