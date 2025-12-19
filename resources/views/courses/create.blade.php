@@ -3,9 +3,9 @@
         Create Course
     </x-slot:heading>
 
-    <section class="text-gray-600 body-font">
-        <div class="container px-5 py-24 mx-auto">
-            <form action="/courses" method="post" enctype="multipart/form-data">
+    <section class="text-gray-600 body-font mb-4">
+        <div class="container px-5 py-16 mx-auto">
+            <form action="/courses/" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end pb-4 mb-4">
                     <div class="relative flex-grow w-full mr-6">

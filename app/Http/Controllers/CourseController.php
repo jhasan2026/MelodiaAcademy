@@ -40,10 +40,9 @@ class CourseController extends Controller
                 ->store('courses', 'public');
         }
 
-        Course::create($validated);
+        $course = Course::create($validated);
 
-        return redirect('/courses')
-            ->with('success', 'Course created successfully!');
+        return redirect("/courses/" . $course->id . "/topics/create")->with('success', 'Course created successfully!');
     }
 
     public function edit(Course $course)

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseTopicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
@@ -20,13 +21,16 @@ Route::controller(CourseController::class)->group(function () {
     });
 
     // ✅ Public routes
-    Route::get('/courses', 'index');
+    Route::get('/courses', 'index')->name('courses.index');
     Route::get('/courses/{course}', 'show');
-
-
 
 });
 
+
+Route::get('/courses/{course}/topics/create', [CourseTopicController::class, 'create'])
+    ->name('topics.create');
+Route::post('/courses/{course}/topics', [CourseTopicController::class, 'store'])
+    ->name('topics.store');
 
 Route::get('/register', [RegisterUserController::class, 'create']);
 Route::post('/register', [RegisterUserController::class, 'store']);
