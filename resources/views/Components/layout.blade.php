@@ -43,16 +43,41 @@
                     <div class="shrink-0">
                         <img src="{{ asset('images/LOGO.png') }}" alt="Your Company" class="size-16" />
                     </div>
+                    @php
+                        $user = Auth::user();
+                    @endphp
+
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-4">
                             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
 
-                            <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
-                            <x-nav-link href="/courses" :active="request()->is('courses')">Course List</x-nav-link>
-                            <x-nav-link >My Course</x-nav-link>
-                            <x-nav-link >My Schedule</x-nav-link>
-                            <x-nav-link >Chat</x-nav-link>
-                            <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>
+                            @if($user === null)
+                                <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
+                                <x-nav-link href="/courses" :active="request()->is('courses')">Course List</x-nav-link>
+                                <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>
+
+                            @elseif($user->role === 'student' |$user->role === 'instructor')
+                                <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
+                                <x-nav-link href="/courses" :active="request()->is('courses')">Course List</x-nav-link>
+                                <x-nav-link >My Course</x-nav-link>
+                                <x-nav-link >My Schedule</x-nav-link>
+                                 <x-nav-link >Chat</x-nav-link>
+                                <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>
+
+                            @elseif($user->role === 'admin')
+                                <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
+                                <x-nav-link href="/courses" :active="request()->is('courses')">Course List</x-nav-link>
+                                <x-nav-link href="/courses/create" :active="request()->is('courses/create')">New Course</x-nav-link>
+                                <x-nav-link >Assign Course</x-nav-link>
+                                <x-nav-link >Student Enrollment</x-nav-link>
+                                <x-nav-link >My Schedule</x-nav-link>
+                                <x-nav-link >Chat</x-nav-link>
+                                <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>
+                            @endif
+
+                            @if($user === null)
+
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -97,9 +122,7 @@
                     </div>
                 @endguest
 
-                @php
-                    $user = Auth::user();
-                @endphp
+
 
                 <div class="ml-4 flex items-center md:ml-6">
                 @auth
