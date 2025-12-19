@@ -2,39 +2,64 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Instructor;
+use App\Models\Student;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        // Admin
         User::factory()->create([
             'role' => 'admin',
-            'first_name'  => 'dummy',
-            'last_name' => 'dummy',
-            'email' => 'admin@gmail.com',
-            'password' => 'admin1234',
+            'first_name' => 'Dummy',
+            'last_name'  => 'Admin',
+            'email'      => 'admin@gmail.com',
+            'password'   => Hash::make('admin1234'),
+            'email_verified_at' => now(),
         ]);
+
+        // Instructor
         User::factory()->create([
             'role' => 'instructor',
-            'first_name'  => 'dummy',
-            'last_name' => 'dummy',
-            'email' => 'instructor@gmail.com',
-            'password' => 'instructor1234',
+            'first_name' => 'Dummy',
+            'last_name'  => 'Instructor',
+            'email'      => 'instructor@gmail.com',
+            'password'   => Hash::make('instructor1234'),
+            'email_verified_at' => now(),
         ]);
+
+        // Student
         User::factory()->create([
             'role' => 'student',
-            'first_name'  => 'dummy',
-            'last_name' => 'dummy',
-            'email' => 'student@gmail.com',
-            'password' => 'student1234',
+            'first_name' => 'Dummy',
+            'last_name'  => 'Student',
+            'email'      => 'student@gmail.com',
+            'password'   => Hash::make('student1234'),
+            'email_verified_at' => now(),
         ]);
-        User::factory(10)->create();
+
+        // Optional: bulk test users with valid roles
+        User::factory()
+            ->count(5)
+            ->create(['role' => 'student']);
+
+        User::factory()
+            ->count(5)
+            ->create(['role' => 'instructor']);
+
+        // Create student with profile via factory
+        Student::factory()->create([
+            'user_id' => 3,
+        ]);
+
+        // Create instructor with profile via factory
+        Instructor::factory()->create([
+            'user_id' => 2,
+        ]);
 
     }
 }

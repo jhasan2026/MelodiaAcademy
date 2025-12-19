@@ -41,9 +41,9 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->enum('gender',['male','female'])->nullable();
-            $table->date('date_of_birth')->nullable();
-            $table->string('profile_pic')->nullable();
+            $table->enum('gender',['male'])->default("male");
+            $table->date('date_of_birth')->default('2000-01-01');
+            $table->string('profile_pic')->default("")->nullable();
             $table->timestamps();
         });
 
@@ -53,7 +53,7 @@ return new class extends Migration
             $table->text('bio')->nullable();
             $table->text('specialization')->nullable();
             $table->unsignedInteger('experience_years')->nullable();
-            $table->string('profile_pic')->nullable();
+            $table->string('profile_pic')->default("")->nullable();
             $table->timestamps();
         });
     }

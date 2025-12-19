@@ -10,116 +10,74 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::latest()->paginate(5);
-        return view('courses.index', [
-            'courses' => $courses
-        ]);
-
+        return view('courses.index', compact('courses'));
     }
 
-    public function create(Course $course)
+    public function create()
     {
         return view('courses.create');
     }
 
     public function show(Course $course)
     {
-        return view('courses.show', [
-            'course' => $course
-        ]);
-
+        return view('courses.show', compact('course'));
     }
 
-    public function store(Course $course)
+    public function store(Request $request)
     {
-        // Validate input
-        request()->validate([
-            'name' => ['required'],
-            'duration_week' => ['required', 'integer'],
-            'description' => ['required'],
-            'instrument_name' => ['required'],
-            'course_level' => ['required'],
-            'payment' => ['required', 'integer'],
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'duration_week' => 'required|integer',
+            'description' => 'required|string',
+            'instrument_name' => 'required|string',
+            'course_level' => 'required|string',
+            'payment' => 'required|integer',
             'instrument_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Fill model data
-        $course->name = request('name');
-        $course->duration_week = request('duration_week');
-        $course->description = request('description');
-        $course->instrument_name = request('instrument_name');
-        $course->course_level = request('course_level');
-        $course->payment = request('payment');
-
-        // Handle image upload
-        if (request()->hasFile('instrument_image')) {
-            $course->instrument_image = request()
-                ->file('instrument_image')
+        if ($request->hasFile('instrument_image')) {
+            $validated['instrument_image'] = $request->file('instrument_image')
                 ->store('courses', 'public');
         }
 
-        // Save to database
-        $course->save();
+        Course::create($validated);
 
-        return redirect('/courses')->with('success', 'Course created successfully!');
+        return redirect('/courses')
+            ->with('success', 'Course created successfully!');
     }
 
     public function edit(Course $course)
     {
-        return view("courses.edit", [
-            "course" => $course
-        ]);
+        return view('courses.edit', compact('course'));
     }
 
-
-    public function update(Course $course)
+    public function update(Request $request, Course $course)
     {
-        request()->validate([
-            'name' => ['required'],
-            'duration_week' => ['required', 'integer'],
-            'description' => ['required'],
-            'instrument_name' => ['required'],
-            'course_level' => ['required'],
-            'payment' => ['required', 'integer'],
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'duration_week' => 'required|integer',
+            'description' => 'required|string',
+            'instrument_name' => 'required|string',
+            'course_level' => 'required|string',
+            'payment' => 'required|integer',
             'instrument_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Fill model data
-        $course->name = request('name');
-        $course->duration_week = request('duration_week');
-        $course->description = request('description');
-        $course->instrument_name = request('instrument_name');
-        $course->course_level = request('course_level');
-        $course->payment = request('payment');
-
-        // Handle image upload
-        if (request()->hasFile('instrument_image')) {
-            $course->instrument_image = request()
-                ->file('instrument_image')
+        if ($request->hasFile('instrument_image')) {
+            $validated['instrument_image'] = $request->file('instrument_image')
                 ->store('courses', 'public');
         }
 
-        // Save to database
-        $course->save();
-        $course->update([
-            'name' => request('name'),
-            'duration_week' => request('duration_week'),
-            'description' => request('description'),
-            'instrument_name' => request('instrument_name'),
-            'course_level' => request('course_level'),
-            'payment' => request('payment'),
-        ]);
+        $course->update($validated);
 
-        return redirect("/courses/". $course->id);
-
+        return redirect('/courses')
+            ->with('success', 'Course updated successfully!');
     }
 
     public function destroy(Course $course)
     {
         $course->delete();
-        return redirect("/courses/");
+        return redirect("/courses/" . $course->id)
+            ->with('success', 'Course deleted successfully!');
     }
-
-
-
-
 }

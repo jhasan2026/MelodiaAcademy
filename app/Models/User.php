@@ -23,6 +23,11 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'gender',
+        'date_of_birth',
+        'bio',
+        'specialization',
+        'experience_years',
     ];
 
     /**
@@ -56,6 +61,17 @@ class User extends Authenticatable
     public function instructor()
     {
         return $this->hasOne(Instructor::class);
+    }
+
+    public function getProfileAttribute()
+    {
+        if ($this->role === 'student') {
+            return $this->student;
+        } elseif ($this->role === 'instructor') {
+            return $this->instructor;
+        }
+
+        return null;
     }
 
 }

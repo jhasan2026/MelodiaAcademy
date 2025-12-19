@@ -37,7 +37,7 @@
 -->
 <div class="min-h-full bg-white">
     <nav class="border-2">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
                 <div class="flex items-center">
                     <div class="shrink-0">
@@ -97,13 +97,29 @@
                     </div>
                 @endguest
 
+                @php
+                    $user = Auth::user();
+                @endphp
+
+                <div class="ml-4 flex items-center md:ml-6">
                 @auth
-                    <form action="/logout" method="post">
-                        @csrf
-                        <x-form-submit-button>
-                            Logout
-                        </x-form-submit-button>
-                    </form>
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            @if($user->role === 'student' || $user->role === 'instructor')
+                                <a class="mr-4" href="{{ route('profile.show') }}"><img class="w-10 h-10 rounded-full"
+                                     src="{{ $user->profile && $user->profile->profile_pic ? asset($user->profile->profile_pic) : asset('images/default.png') }}"
+                                     alt="Rounded avatar">
+                                </a>
+                            @endif
+
+                            <form action="/logout" method="post">
+                                @csrf
+                                <x-form-submit-button>
+                                    Logout
+                                </x-form-submit-button>
+                            </form>
+                        </div>
+                    </div>
                 @endauth
             </div>
         </div>
