@@ -43,7 +43,7 @@
 
                 <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end pb-4">
                     <div class="relative flex-grow w-full mr-6">
-                        <x-form-label for="course_level">Instrument Name</x-form-label>
+                        <x-form-label for="course_level">Course Level</x-form-label>
                         <x-form-input-multi-select id="course_level" name="course_level">
                             <option value="beginner">Beginner</option>
                             <option value="intermediate">Intermediate</option>
@@ -64,8 +64,14 @@
 
                 </div>
 
-                <div class="text-center my-4">
-                    <x-form-button href="">Create Course</x-form-button>
+                <div class="flex justify-center items-center">
+                    <div class="text-center my-4 pr-10">
+                        <x-form-cancel-button href="courses/">Cancel</x-form-cancel-button>
+                    </div>
+
+                    <div class="text-center my-4">
+                        <x-form-submit-button>Save</x-form-submit-button>
+                    </div>
                 </div>
             </form>
         </div>
