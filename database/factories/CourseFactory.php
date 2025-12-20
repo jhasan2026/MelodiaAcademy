@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,7 +31,10 @@ class CourseFactory extends Factory
             'course_level' => $this->faker->randomElement([
                 'beginner', 'intermediate', 'advanced'
             ]),
+            'user_id' => 1,
         ];
     }
+
+
 
 }

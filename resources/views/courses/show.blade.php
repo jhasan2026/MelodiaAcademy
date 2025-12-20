@@ -66,9 +66,10 @@
                     @endforeach
                 </ul>
             </div>
+            <div class="w-7/8 flex justify-end mr-32">
+                <x-form-a-button href="{{ route('courses.edit', $course->id) }}">Edit</x-form-a-button>
+            </div>
         </div>
-
-
 
     </section>
 </x-layout>

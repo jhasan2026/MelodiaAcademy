@@ -5,6 +5,7 @@ use App\Http\Controllers\CourseTopicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
+use App\Models\Course;
 use Illuminate\Support\Facades\Route;
 
 Route::view("/",'dashboard');
@@ -13,16 +14,26 @@ Route::view("/",'dashboard');
 Route::controller(CourseController::class)->group(function () {
     // 🔒 Protected routes (auth required)
     Route::middleware('auth')->group(function () {
-        Route::get('/courses/create', 'create');
+        Route::get('/courses/create', 'create')
+            ->can('create', Course::class);
+
         Route::post('/courses', 'store');
-        Route::get('/courses/{course}/edit', 'edit');
+
+        Route::get('/courses/{course}/edit', 'edit')
+            ->name('courses.edit')
+            ->can('edit', Course::class);
+
+
         Route::patch('/courses/{course}', 'update');
+
         Route::delete('/courses/{course}', 'destroy');
     });
 
     // ✅ Public routes
-    Route::get('/courses', 'index')->name('courses.index');
-    Route::get('/courses/{course}', 'show');
+    Route::get('/courses', 'index')
+        ->name('courses.index');
+    Route::get('/courses/{course}', 'show')
+        ->name("courses.show");
 
 });
 
