@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
+    
     public function index()
     {
         $courses = Course::latest()->paginate(5);
