@@ -6,9 +6,9 @@
     <section class="text-gray-600 body-font">
         <div class="container px-5 py-16 mx-auto">
             <div class="flex flex-wrap m-4">
-
-                @foreach($courses as $course)
-                    <a href="/courses/{{$course->id}}" class="p-4 mb-4 md:w-1/3 hover:border hover:border-2 hover:rounded-lg hover:bg-white">
+                @if($courses->count())
+                    @foreach($courses as $course)
+                    <a class="p-4 mb-4 md:w-1/3 hover:border hover:border-2 hover:rounded-lg hover:bg-white">
                         <div class="bg-white h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                             <img  src="{{ asset('storage/' . $course->instrument_image) }}" class="lg:h-48 md:h-36 w-full object-cover object-center" alt="Your Company" class="size-16" />
                             <div class="p-6 pb-4">
@@ -27,10 +27,10 @@
                             </div>
                         </div>
                     </a>
-                @endforeach
-            </div>
-            <div>
-                {{ $courses->links() }}
+                    @endforeach
+                @else
+                    <p>You are not enrolled in any courses yet.</p>
+                @endif
             </div>
         </div>
     </section>

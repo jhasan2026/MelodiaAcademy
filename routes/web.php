@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseEnrollController;
 use App\Http\Controllers\CourseTopicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterUserController;
@@ -37,11 +38,29 @@ Route::controller(CourseController::class)->group(function () {
 
 });
 
+Route::get('/courses/{course}/enroll', [CourseEnrollController::class, 'create'])
+    ->name('course-enroll.create')
+    ->middleware('auth');
+
+Route::post('/courses/{course}/enroll', [CourseEnrollController::class, 'store'])
+    ->name('course-enroll.store')
+    ->middleware('auth');
+
+Route::get('/my_course',[CourseEnrollController::class,'index'])
+    ->name("course-enroll.index");
+
+
 
 Route::get('/courses/{course}/topics/create', [CourseTopicController::class, 'create'])
     ->name('topics.create');
 Route::post('/courses/{course}/topics', [CourseTopicController::class, 'store'])
     ->name('topics.store');
+
+
+
+
+
+
 
 Route::get('/register', [RegisterUserController::class, 'create']);
 Route::post('/register', [RegisterUserController::class, 'store']);
@@ -50,6 +69,9 @@ Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store']);
 
 Route::post('/logout', [SessionController::class, 'destroy']);
+
+
+
 
 
 

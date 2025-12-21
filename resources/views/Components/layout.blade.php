@@ -59,7 +59,7 @@
                             @elseif($user->role === 'student' |$user->role === 'instructor')
                                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
                                 <x-nav-link href="/courses" :active="request()->is('courses')">Course List</x-nav-link>
-                                <x-nav-link >My Course</x-nav-link>
+                                <x-nav-link href="/my_course">My Course</x-nav-link>
                                 <x-nav-link >My Schedule</x-nav-link>
                                  <x-nav-link >Chat</x-nav-link>
                                 <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>
@@ -313,7 +313,7 @@
 
 </div>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
 </body>
 
 </html>

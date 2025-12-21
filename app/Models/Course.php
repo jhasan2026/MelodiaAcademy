@@ -13,6 +13,7 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'name',
         'description',
         'duration_week',
@@ -20,6 +21,8 @@ class Course extends Model
         'instrument_image',
         'payment',
         'course_level',
+        'enroll_status',
+        'student_id',
     ];
 
     public function course_topic(): HasMany
@@ -30,6 +33,11 @@ class Course extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function enrollment(): HasMany
+    {
+        return $this->hasMany(CourseEnroll::class);
     }
 
 

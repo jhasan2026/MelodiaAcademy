@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -34,6 +35,8 @@ class CourseController extends Controller
             'payment' => 'required|integer',
             'instrument_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $validated['user_id'] = Auth::id();
 
         if ($request->hasFile('instrument_image')) {
             $validated['instrument_image'] = $request->file('instrument_image')

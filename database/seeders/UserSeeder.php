@@ -56,6 +56,10 @@ class UserSeeder extends Seeder
             'user_id' => 3,
         ]);
 
+        Student::factory()->create([
+            'user_id' => 4,
+        ]);
+
         // Create instructor with profile via factory
         Instructor::factory()->create([
             'user_id' => 2,

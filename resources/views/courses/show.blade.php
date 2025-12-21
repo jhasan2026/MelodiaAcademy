@@ -12,7 +12,7 @@
                 </h1>
                 <p class="mb-8 leading-relaxed">{{ $course->description }}</p>
                 <div class="flex justify-center">
-                    <a
+                    <a href="{{ route('course-enroll.create', $course->id) }}"
                         class="flex items-center justify-center gap-2 text-white bg-emerald-800 border-0 py-2 px-6 focus:outline-none hover:bg-emerald-600 rounded text-lg">
                         <svg class="w-4 h-4" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg"
