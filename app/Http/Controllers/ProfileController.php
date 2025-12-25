@@ -64,8 +64,8 @@ class ProfileController extends Controller
             ]);
 
             $profile->update([
-                'gender'        => $request->input('gender') ?: null,           // convert empty string to null
-                'date_of_birth' => $request->input('date_of_birth') ?: null,    // convert empty string to null
+                'gender'        => $request->input('gender'),           // convert empty string to null
+                'date_of_birth' => $request->input('date_of_birth'),    // convert empty string to null
             ]);
         } elseif ($user->role === 'instructor') {
             $request->validate([

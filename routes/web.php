@@ -9,8 +9,11 @@ use App\Http\Controllers\SessionController;
 use App\Models\Course;
 use Illuminate\Support\Facades\Route;
 
+//-------------------------------------------------------------Dashboard---------------------------------------------------------------------------
 Route::view("/",'dashboard');
 
+
+//-------------------------------------------------------------Courses---------------------------------------------------------------------------
 
 Route::controller(CourseController::class)->group(function () {
     // 🔒 Protected routes (auth required)
@@ -38,33 +41,41 @@ Route::controller(CourseController::class)->group(function () {
 
 });
 
+
+//-------------------------------------------------------------Course Enroll---------------------------------------------------------------------------
+
 Route::get('/courses/{course}/enroll', [CourseEnrollController::class, 'create'])
     ->name('course-enroll.create')
-    ->middleware('auth');
+    ->middleware('auth')
+    ->can('create', "course");
+
 
 Route::post('/courses/{course}/enroll', [CourseEnrollController::class, 'store'])
     ->name('course-enroll.store')
-    ->middleware('auth');
+    ->middleware('auth')
+    ->can('store', "course");
+
+
+//-------------------------------------------------------------My Courses---------------------------------------------------------------------------
 
 Route::get('/my_course',[CourseEnrollController::class,'index'])
     ->name("course-enroll.index");
 
 
 
+//-------------------------------------------------------------Course Topic---------------------------------------------------------------------------
 Route::get('/courses/{course}/topics/create', [CourseTopicController::class, 'create'])
     ->name('topics.create');
 Route::post('/courses/{course}/topics', [CourseTopicController::class, 'store'])
     ->name('topics.store');
 
 
-
-
-
-
-
+//-------------------------------------------------------------Register---------------------------------------------------------------------------
 Route::get('/register', [RegisterUserController::class, 'create']);
 Route::post('/register', [RegisterUserController::class, 'store']);
 
+
+//-------------------------------------------------------------Login---------------------------------------------------------------------------
 Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store']);
 

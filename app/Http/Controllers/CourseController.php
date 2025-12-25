@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
-    
+
     public function index()
     {
         $courses = Course::latest()->paginate(5);
@@ -44,9 +44,9 @@ class CourseController extends Controller
                 ->store('courses', 'public');
         }
 
-        $course = Course::create($validated);
+        Course::create($validated);
 
-        return redirect("/courses/" . $course->id . "/topics/create")->with('success', 'Course created successfully!');
+        return redirect()->route("courses.index")->with('success', 'Course created successfully!');
     }
 
     public function edit(Course $course)
@@ -73,14 +73,14 @@ class CourseController extends Controller
 
         $course->update($validated);
 
-        return redirect('/courses')
+        return redirect()->route("courses.show",$course->id)
             ->with('success', 'Course updated successfully!');
     }
 
     public function destroy(Course $course)
     {
         $course->delete();
-        return redirect("/courses/" . $course->id)
+        return redirect()->route("courses.index")
             ->with('success', 'Course deleted successfully!');
     }
 }

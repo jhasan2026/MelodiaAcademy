@@ -27,9 +27,19 @@ class CourseEnrollPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Course $course): bool
     {
-        return false;
+        // Only students can enroll
+        if ($user->role !== 'student') {
+            return false;
+        }
+
+        $student = $user->student;
+
+        // Prevent duplicate enrollment
+        return !$course->enrollment()
+            ->where('student_id', $student->id)
+            ->exists();
     }
 
     public function store(User $user, Course $course): bool
@@ -40,10 +50,6 @@ class CourseEnrollPolicy
         }
 
         $student = $user->student;
-
-        if (!$student) {
-            return false;
-        }
 
         // Prevent duplicate enrollment
         return !$course->enrollment()

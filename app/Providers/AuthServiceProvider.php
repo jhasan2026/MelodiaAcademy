@@ -14,7 +14,8 @@ class AuthServiceProvider extends ServiceProvider
      * The policy mappings for the application.
      */
     protected $policies = [
-        Course::class => CourseEnrollPolicy::class,
+        Course::class => Course::class,
+        CourseEnroll::class => CourseEnrollPolicy::class
     ];
 
     /**
