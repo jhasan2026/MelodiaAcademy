@@ -1,10 +1,12 @@
+<script src="https://cdn.tailwindcss.com"></script>
 <x-layout>
     <x-slot:heading>
         Login
     </x-slot:heading>
 
     <section class="text-gray-600 body-font">
-        <div class="container px-5 py-24 mx-auto w-1/3">
+        <div class="pt-32">
+            <div class="container px-5 py-8 mx-auto w-1/3 bg-blue-50 rounded-xl">
 
         <form method="post" action="/login">
             @csrf
@@ -41,6 +43,7 @@
             </div>
         </form>
 
+        </div>
         </div>
     </section>
 

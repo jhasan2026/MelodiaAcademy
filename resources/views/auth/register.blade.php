@@ -1,10 +1,12 @@
+<script src="https://cdn.tailwindcss.com"></script>
 <x-layout>
     <x-slot:heading>
         Register
     </x-slot:heading>
 
     <section class="text-gray-600 body-font">
-        <div class="container px-5 py-24 mx-auto w-1/3">
+        <div class="pt-24 pt-8">
+            <div class="container px-12 py-12 mx-auto w-1/3 bg-blue-50 rounded-xl">
 
             <form method="post" action="/register">
                 @csrf
@@ -80,6 +82,7 @@
                     <x-form-submit-button>Register</x-form-submit-button>
                 </div>
             </form>
+        </div>
         </div>
     </section>
 

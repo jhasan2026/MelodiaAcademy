@@ -1,3 +1,4 @@
+<script src="https://cdn.tailwindcss.com"></script>
 <x-layout>
     <x-slot:heading>
         Create Course
@@ -20,7 +21,7 @@
                     </div>
                 </div>
 
-                <div class="flex lg:w-2/3 w-full flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-start pb-4 mb-4 ">
+                <div class="flex lg:w-2/3 w-full flex-col mx-auto px-2 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-start pb-4 mb-4 ">
                     <x-form-label for="description">Description</x-form-label>
                     <x-form-text-area id="description" name="description" rows="6" placeholder="Write your thoughts here..."/>
 

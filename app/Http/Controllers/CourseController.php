@@ -22,7 +22,8 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
-        return view('courses.show', compact('course'));
+        $user = Auth::user();
+        return view('courses.show', compact('course', 'user'));
     }
 
     public function store(Request $request)

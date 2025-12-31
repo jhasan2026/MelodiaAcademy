@@ -1,3 +1,4 @@
+<script src="https://cdn.tailwindcss.com"></script>
 <x-layout>
     <x-slot:heading>My Profile</x-slot:heading>
 
@@ -8,7 +9,7 @@
         <div class="w-full max-w-7xl mx-auto px-6 md:px-8">
             @if($user->role === 'student' | $user->role === 'instructor')
                 <div class="flex items-center justify-center sm:justify-start relative z-10 mb-5">
-                    <img src="{{ $profile && $profile->profile_pic ? asset($profile->profile_pic) : asset('images/default.png') }}" alt="user-avatar-image" class="h-48 w-48 border-4 border-solid border-white rounded-full object-cover">
+                    <img src="{{ $profile && $profile->profile_pic ? asset($profile->profile_pic) : asset('images/default.jpg') }}" alt="user-avatar-image" class="h-48 w-48 border-4 border-solid border-white rounded-full object-cover">
                 </div>
             @endif
             <div class="flex flex-col sm:flex-row max-sm:gap-5 items-center justify-between mb-5">

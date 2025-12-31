@@ -14,11 +14,22 @@ class CourseEnroll extends Model
     protected $fillable = [
         'course_id',
         'student_id',
-        'enroll_status'
+        'enroll_status',
+        'full_name',
+        'cardNumber',
+        'cardExpiration',
+        'cvv',
     ];
 
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+
+
 }

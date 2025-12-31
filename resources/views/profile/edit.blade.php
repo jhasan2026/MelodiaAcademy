@@ -1,3 +1,4 @@
+<script src="https://cdn.tailwindcss.com"></script>
 <x-layout>
     <x-slot:heading>Edit Profile</x-slot:heading>
     <section class="relative pt-40 pb-24">
@@ -13,7 +14,7 @@
                     <div>
                         <label for="profile_pic">
                             <input type="file" name="profile_pic" id="profile_pic" class="hidden">
-                            <img class="h-8 w-8 cursor-pointer" src="{{ asset('images/camera.png') }}" alt="Upload">
+                            <img class="h-8 w-8 cursor-pointer " src="{{ asset('images/camera.png') }}" alt="Upload">
                         </label>
 
                     </div>
@@ -42,7 +43,7 @@
 
                     <div class="flex items-center gap-4">
                         <button type="submit"
-                           class="py-3.5 px-5 rounded-full bg-indigo-600 text-white font-semibold text-base leading-7 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-100 hover:bg-indigo-700">Save Profile
+                           class="py-3.5 px-5 rounded-full bg-emerald-500 text-white font-semibold text-base leading-7 shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-100 hover:bg-emerald-200">Save Profile
                         </button>
 
                     </div>

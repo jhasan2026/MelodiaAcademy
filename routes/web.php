@@ -46,14 +46,12 @@ Route::controller(CourseController::class)->group(function () {
 
 Route::get('/courses/{course}/enroll', [CourseEnrollController::class, 'create'])
     ->name('course-enroll.create')
-    ->middleware('auth')
-    ->can('create', "course");
+    ->middleware('auth');
 
 
 Route::post('/courses/{course}/enroll', [CourseEnrollController::class, 'store'])
     ->name('course-enroll.store')
-    ->middleware('auth')
-    ->can('store', "course");
+    ->middleware('auth');
 
 
 //-------------------------------------------------------------My Courses---------------------------------------------------------------------------
@@ -62,6 +60,16 @@ Route::get('/my_course',[CourseEnrollController::class,'index'])
     ->name("course-enroll.index");
 
 
+//---------------------------------------------------------------Student Enrolment-------------------------------------------------
+
+Route::get('/student_enrolment',[CourseEnrollController::class,'enroll'])
+    ->name("course-enroll.enrolment");
+
+Route::patch('/course-enroll/{courseEnroll}/approve', [CourseEnrollController::class, 'approve'])
+    ->name('course-enroll.approve');
+
+Route::patch('/course-enroll/{courseEnroll}/reject', [CourseEnrollController::class, 'reject'])
+    ->name('course-enroll.reject');
 
 //-------------------------------------------------------------Course Topic---------------------------------------------------------------------------
 Route::get('/courses/{course}/topics/create', [CourseTopicController::class, 'create'])
@@ -84,7 +92,7 @@ Route::post('/logout', [SessionController::class, 'destroy']);
 
 
 
-
+//-----------------------------------------------------------Profile--------------------------------------------------------------
 
 Route::middleware(['auth'])->group(function () {
     // View profile

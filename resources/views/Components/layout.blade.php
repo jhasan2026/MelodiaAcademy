@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -69,7 +68,7 @@
                                 <x-nav-link href="/courses" :active="request()->is('courses')">Course List</x-nav-link>
                                 <x-nav-link href="/courses/create" :active="request()->is('courses/create')">New Course</x-nav-link>
                                 <x-nav-link >Assign Course</x-nav-link>
-                                <x-nav-link >Student Enrollment</x-nav-link>
+                                <x-nav-link href="/student_enrolment"> Student Enrollment</x-nav-link>
                                 <x-nav-link >My Schedule</x-nav-link>
                                 <x-nav-link >Chat</x-nav-link>
                                 <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>
