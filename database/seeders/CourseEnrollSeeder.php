@@ -22,13 +22,22 @@ class CourseEnrollSeeder extends Seeder
         }
 
         // student_id = 2 → next 5 courses
-        $coursesForStudent2 = Course::skip(5)->take(5)->pluck('id');
+        $coursesForStudent2 = Course::skip(5)->take(2)->pluck('id');
 
         foreach ($coursesForStudent2 as $courseId) {
             CourseEnroll::create([
                 'course_id'     => $courseId,
                 'student_id'    => 2,
-                'enroll_status' => 'pending',
+                'enroll_status' => 'approved',
+            ]);
+        }
+        $coursesForStudent3 = Course::skip(7)->take(3)->pluck('id');
+
+        foreach ($coursesForStudent2 as $courseId) {
+            CourseEnroll::create([
+                'course_id'     => $courseId,
+                'student_id'    => 2,
+                'enroll_status' => 'rejected',
             ]);
         }
     }

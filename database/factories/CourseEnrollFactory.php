@@ -20,7 +20,7 @@ class CourseEnrollFactory extends Factory
         return [
             'course_id'     => Course::inRandomOrder()->first()->id,
             'student_id'    => 1, // default, overridden in seeder
-            'enroll_status' => 'pending',
+            'enroll_status' => $this->faker->randomElement(['pending', 'accepted', 'rejected']),
         ];
     }
 }
