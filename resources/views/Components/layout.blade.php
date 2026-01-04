@@ -129,7 +129,7 @@
                         <div class="ml-4 flex items-center md:ml-6">
                             @if($user->role === 'student' || $user->role === 'instructor')
                                 <a class="mr-4" href="{{ route('profile.show') }}"><img class="w-10 h-10 rounded-full"
-                                     src="{{ $user->profile && $user->profile->profile_pic ? asset($user->profile->profile_pic) : asset('images/default.png') }}"
+                                     src="{{ $user->profile && $user->profile->profile_pic ? asset($user->profile->profile_pic) : asset('images/default.jpeg') }}"
                                      alt="Rounded avatar">
                                 </a>
                             @endif

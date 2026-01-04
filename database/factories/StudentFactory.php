@@ -16,7 +16,7 @@ class StudentFactory extends Factory
             'user_id' => User::factory(), // creates a user if none provided
             'gender' => 'male',
             'date_of_birth' => $this->faker->date('Y-m-d', '-18 years'),
-            'profile_pic' => 'images/default.png', // default profile picture
+            'profile_pic' => 'images/default.jpg', // default profile picture
         ];
     }
 }

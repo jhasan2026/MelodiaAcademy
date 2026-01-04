@@ -17,7 +17,7 @@ class InstructorFactory extends Factory
             'bio' => $this->faker->paragraph(),
             'specialization' => $this->faker->words(3, true),
             'experience_years' => $this->faker->numberBetween(1, 20),
-            'profile_pic' => 'images/default.png', // default profile picture
+            'profile_pic' => 'images/default.jpg', // default profile picture
         ];
     }
 }

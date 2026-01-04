@@ -11,7 +11,6 @@ class CourseEnrollController extends Controller
 {
     public function create(Course $course)
     {
-//        $this->authorize('create', [Course::class, $course]);
         return view("course_enroll.create", compact('course'));
     }
 

@@ -30,7 +30,21 @@
                 @endauth
 
             </div>
+
         </div>
+
+        <div class="max-w-5xl mx-auto bg-gray-50 shadow-lg rounded-lg mb-6">
+            <div class="px-4 py-2">
+                <h1 class="text-red-800 font-bold text-2xl ">List of topic</h1>
+            </div>
+            <ul class="divide-y divide-gray-200 px-4">
+                @foreach($course->course_topic()->oldest()->get() as $topic)
+                    <x-topic-list>{{ $topic->topic }}</x-topic-list>
+                @endforeach
+            </ul>
+        </div>
+
+
 
         <section class="text-white body-font border-t">
             <div class="container py-16 mx-auto">
@@ -63,21 +77,23 @@
 
 
         <div class="py-16">
-            <div class="max-w-5xl mx-auto bg-white shadow-lg rounded-lg">
-                <div class="px-4 py-2">
-                    <h1 class="text-gray-800 font-bold text-2xl uppercase">List of topic</h1>
-                </div>
-                <ul class="divide-y divide-gray-200 px-4">
-                    @foreach($course->course_topic()->oldest()->get() as $topic)
-                        <x-topic-list>{{ $topic->topic }}</x-topic-list>
-                    @endforeach
-                </ul>
-            </div>
 
             @auth
                 @if($user->role === 'admin')
                     <div class="w-7/8 flex justify-end mr-32">
                         <x-form-a-button href="{{ route('courses.edit', $course->id) }}">Edit</x-form-a-button>
+
+                        <form action="{{ route('courses.destroy', $course->id) }}" method="POST"
+                              onsubmit="return confirm('Are you sure you want to delete this course?');">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                    class="px-4 py-2 bg-red-600 mx-4 text-white rounded hover:bg-red-700">
+                                Delete
+                            </button>
+                        </form>
+
                     </div>
                 @elseif($user->role === 'instructor')
                     <div class="w-7/8 flex justify-end mr-32">

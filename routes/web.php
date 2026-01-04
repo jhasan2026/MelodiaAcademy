@@ -30,7 +30,7 @@ Route::controller(CourseController::class)->group(function () {
 
         Route::patch('/courses/{course}', 'update');
 
-        Route::delete('/courses/{course}', 'destroy');
+        Route::delete('/courses/{course}', 'destroy')->name('courses.destroy');
     });
 
     // ✅ Public routes
