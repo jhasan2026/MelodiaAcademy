@@ -23,7 +23,7 @@ class CourseCommentController extends Controller
         ]);
 
         return redirect()
-            ->route('courses.show', $course->id)
+            ->route('course-enroll.show', $course->id)
             ->with('success', 'Comment added successfully.');
     }
 
@@ -72,7 +72,7 @@ class CourseCommentController extends Controller
 
         // Redirect safely
         return redirect()
-            ->route('courses.show', $courseId)
+            ->route('course-enroll.show', $courseId)
             ->with('success', 'Comment removed successfully.');
     }
 

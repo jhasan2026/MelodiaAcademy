@@ -55,34 +55,43 @@ Route::middleware('auth')->group(function () {
 });
 
 
-//-------------------------------------------------------------Course Enroll---------------------------------------------------------------------------
+Route::controller(CourseEnrollController::class)->group(function () {
 
-Route::get('/courses/{course}/enroll', [CourseEnrollController::class, 'create'])
-    ->name('course-enroll.create')
-    ->middleware('auth');
+    // 🔒 Auth required routes
+    Route::middleware('auth')->group(function () {
 
+        //-------------------------------------------------------------
+        // Course Enroll
+        //-------------------------------------------------------------
+        Route::get('/courses/{course}/enroll', 'create')
+            ->name('course-enroll.create');
 
-Route::post('/courses/{course}/enroll', [CourseEnrollController::class, 'store'])
-    ->name('course-enroll.store')
-    ->middleware('auth');
+        Route::post('/courses/{course}/enroll', 'store')
+            ->name('course-enroll.store');
 
+        //-------------------------------------------------------------
+        // My Courses
+        //-------------------------------------------------------------
+        Route::get('/my_course', 'index')
+            ->name('course-enroll.index');
 
-//-------------------------------------------------------------My Courses---------------------------------------------------------------------------
+        Route::get('my_course/{course}', 'show')
+            ->name('course-enroll.show');
 
-Route::get('/my_course',[CourseEnrollController::class,'index'])
-    ->name("course-enroll.index");
+        //-------------------------------------------------------------
+        // Student Enrolment (Admin/Teacher)
+        //-------------------------------------------------------------
+        Route::get('/student_enrolment', 'enroll')
+            ->name('course-enroll.enrolment');
 
+        Route::patch('/course-enroll/{courseEnroll}/approve', 'approve')
+            ->name('course-enroll.approve');
 
-//---------------------------------------------------------------Student Enrolment-------------------------------------------------
+        Route::patch('/course-enroll/{courseEnroll}/reject', 'reject')
+            ->name('course-enroll.reject');
+    });
 
-Route::get('/student_enrolment',[CourseEnrollController::class,'enroll'])
-    ->name("course-enroll.enrolment");
-
-Route::patch('/course-enroll/{courseEnroll}/approve', [CourseEnrollController::class, 'approve'])
-    ->name('course-enroll.approve');
-
-Route::patch('/course-enroll/{courseEnroll}/reject', [CourseEnrollController::class, 'reject'])
-    ->name('course-enroll.reject');
+});
 
 //-------------------------------------------------------------Course Topic---------------------------------------------------------------------------
 Route::get('/courses/{course}/topics/create', [CourseTopicController::class, 'create'])

@@ -9,7 +9,7 @@
             <div class="flex flex-wrap m-4">
                 @if($courses->count())
                     @foreach($courses as $course)
-                    <a class="p-4 mb-4 md:w-1/3 hover:border hover:border-2 hover:rounded-lg hover:bg-white">
+                    <a class="p-4 mb-4 md:w-1/3 hover:border hover:border-2 hover:rounded-lg hover:bg-white" href="my_course/{{ $course->id }}">
                         <div class="bg-white h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                             <img  src="{{ asset('storage/' . $course->instrument_image) }}" class="lg:h-48 md:h-36 w-full object-cover object-center" alt="Your Company" class="size-16" />
                             <div class="p-6 pb-4">

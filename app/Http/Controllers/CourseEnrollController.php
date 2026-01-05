@@ -43,6 +43,11 @@ class CourseEnrollController extends Controller
 
     }
 
+    public function show(Course  $course){
+        $user = Auth::user();
+        return view('course_enroll.show', compact('course','user'));
+    }
+
     public function enroll()
     {
         $course_enrolments =  CourseEnroll::with(['course','student.user'])

@@ -52,20 +52,28 @@
 
                             @if($user === null)
                                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
-                                <x-nav-link href="/courses" :active="request()->is('courses')">Course List</x-nav-link>
+                                <x-nav-link href="/courses" :active="request()->is('courses') || request()->is('courses/*')">Course List</x-nav-link>
                                 <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>
 
-                            @elseif($user->role === 'student' |$user->role === 'instructor')
+                            @elseif($user->role === 'student')
                                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
-                                <x-nav-link href="/courses" :active="request()->is('courses')">Course List</x-nav-link>
-                                <x-nav-link href="/my_course">My Course</x-nav-link>
+                                <x-nav-link href="/courses" :active="request()->is('courses') || request()->is('courses/*')">Course List</x-nav-link>
+                                <x-nav-link href="/my_course" :active="request()->is('my_course') || request()->is('my_course/*')">My Course</x-nav-link>
+                                <x-nav-link >My Schedule</x-nav-link>
+                                 <x-nav-link >Chat</x-nav-link>
+                                <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>
+
+                            @elseif($user->role === 'instructor')
+                                <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
+                                <x-nav-link href="/courses" :active="request()->is('courses') || request()->is('courses/*')">Course List</x-nav-link>
+                                <x-nav-link href="/assigned_course" :active="request()->is('assigned_course') || request()->is('assigned_course/*')">Assigned Course</x-nav-link>
                                 <x-nav-link >My Schedule</x-nav-link>
                                  <x-nav-link >Chat</x-nav-link>
                                 <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>
 
                             @elseif($user->role === 'admin')
                                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
-                                <x-nav-link href="/courses" :active="request()->is('courses')">Course List</x-nav-link>
+                                <x-nav-link href="/courses" :active="request()->is('courses') || request()->is('courses/*')">Course List</x-nav-link>
                                 <x-nav-link href="/courses/create" :active="request()->is('courses/create')">New Course</x-nav-link>
                                 <x-nav-link >Assign Course</x-nav-link>
                                 <x-nav-link href="/student_enrolment"> Student Enrollment</x-nav-link>
@@ -113,10 +121,10 @@
                 @guest
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
-                            <x-nav-link href="/login"> Login</x-nav-link>
+                            <x-nav-link href="/login"  :active="request()->is('login')"> Login</x-nav-link>
 
                             <!-- Profile dropdown -->
-                            <x-nav-link href="/register"> Signup</x-nav-link>
+                            <x-nav-link href="/register" :active="request()->is('register')"> Signup</x-nav-link>
                         </div>
                     </div>
                 @endguest

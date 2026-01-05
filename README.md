@@ -36,9 +36,18 @@
     - store: store into db
     - edit
     - update
-    - delete
+    - delete  
    
-3. Course Enroll Controller
+3. Course Comments Controller
+    - index
+    - show
+    - create: create comment 
+    - store: store into db
+    - edit: edit comment
+    - update: store db
+    - delete: delete comment
+   
+4. Course Enroll Controller
     - index: my course - assigned course for me [student]
     - show
     - create: course enroll by the student - payment page [student]
@@ -49,11 +58,11 @@
     - enrol: confirmation by the admin - view
     - approve: if approve
     - reject: if reject
-4. Session Controller
+5. Session Controller
 
-5. Register Controller
+6. Register Controller
 
-6. Profile Controller
+7. Profile Controller
     - index
     - show: user profile view [student, instructor]
     - create
