@@ -27,6 +27,35 @@ class CourseCommentController extends Controller
             ->with('success', 'Comment added successfully.');
     }
 
+    public function edit(Comment $comment)
+    {
+        // Authorization
+        if (auth()->id() !== $comment->user_id) {
+            abort(403);
+        }
+
+        return view('courses.show', compact('comment'));
+    }
+
+    public function update(Request $request, Comment $comment)
+    {
+        if (auth()->id() !== $comment->user_id) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'comment' => 'required|string|max:2000',
+        ]);
+
+        $comment->update([
+            'comment' => $validated['comment'],
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Comment updated successfully.');
+    }
+
 
     public function destroy(Comment $comment)
     {

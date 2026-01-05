@@ -107,9 +107,9 @@
 
 
     <section class="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased mb-4">
-      <div class="max-w-2xl mx-auto px-4">
+      <div class="max-w-4xl mx-auto px-4">
           <div class="flex justify-between items-center mb-6">
-            <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion (20)</h2>
+            <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Review</h2>
         </div>
 
           @if(auth()->check())
@@ -143,9 +143,12 @@
                             title="February 8th, 2022">{{ $comment->created_at->diffForHumans() }}</time></p>
                 </div>
                 @if(auth()->id() === $comment->user_id)
-                    <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
-                        class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                        type="button">
+                    <button
+                        id="dropdownCommentButton-{{ $comment->id }}"
+                        data-dropdown-toggle="dropdownComment-{{ $comment->id }}"
+                        type="button"
+                        class="inline-flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-100"
+                    >
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
                             <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
                         </svg>
@@ -153,86 +156,98 @@
                     </button>
                 @endif
                 <!-- Dropdown menu -->
-                <div id="dropdownComment1"
-                    class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                        aria-labelledby="dropdownMenuIconHorizontalButton">
+                <div
+                    id="dropdownComment-{{ $comment->id }}"
+                    class="absolute right-0 mt-2 hidden z-50 w-36
+                           bg-white rounded-lg shadow-lg
+                           divide-y divide-gray-100
+                             dark:bg-gray-700 dark:divide-gray-600"
+                >
+                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
                         <li>
-                            <a href="#"
-                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                            <button
+                                type="button"
+                                onclick="toggleEdit({{ $comment->id }})"
+                                class="block w-full text-left px-4 py-2
+                       hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                                Edit
+                            </button>
                         </li>
+
                         <li>
                             <form action="{{ route('comments.destroy', $comment->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                <button
+                                    type="submit"
+                                    class="block w-full text-left px-4 py-2
+                           hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                >
                                     Delete
                                 </button>
                             </form>
                         </li>
                     </ul>
                 </div>
-            </footer>
-            <p class="text-gray-500 dark:text-gray-400">{{ $comment->comment }}</p>
 
-        </article>
+            </footer>
+                {{-- Comment Text --}}
+                <div id="comment-text-{{ $comment->id }}">
+                    <p class="text-gray-500 dark:text-gray-400">
+                        {{ $comment->comment }}
+                    </p>
+                </div>
+
+                {{-- Edit Form --}}
+                @if(auth()->id() === $comment->user_id)
+                    <form id="edit-form-{{ $comment->id }}"
+                          action="{{ route('comments.update', $comment->id) }}"
+                          method="POST"
+                          class="hidden mt-4">
+                        @csrf
+                        @method('PUT')
+
+                        <textarea name="comment"
+                                  rows="4"
+                                  class="w-full p-2 text-sm text-gray-800 border rounded-lg "
+                                  required>{{ $comment->comment }}</textarea>
+
+                        <div class="flex gap-2 mt-2">
+                            <button type="submit"
+                                    class="px-3 py-1 text-sm text-white bg-indigo-600 rounded hover:bg-indigo-700">
+                                Update
+                            </button>
+
+                            <button type="button"
+                                    onclick="toggleEdit({{ $comment->id }})"
+                                    class="px-3 py-1 text-sm bg-gray-300 rounded hover:bg-gray-400">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                @endif
+
+
+            </article>
           @endforeach
       </div>
     </section>
 
-{{--        <div class="space-y-4">--}}
-{{--            @foreach($course->comments as $comment)--}}
-{{--                <div class="border p-4 rounded">--}}
-{{--                    <div class="flex justify-between items-center">--}}
-{{--                        <div>--}}
-{{--                            <p class="font-semibold">{{ $comment->user->name }}</p>--}}
-{{--                            <p class="text-sm text-gray-500">--}}
-{{--                                {{ $comment->created_at->diffForHumans() }}--}}
-{{--                            </p>--}}
-{{--                        </div>--}}
 
-{{--                        @if(auth()->id() === $comment->user_id)--}}
-{{--                            <form action="{{ route('comments.destroy', $comment->id) }}" method="POST">--}}
-{{--                                @csrf--}}
-{{--                                @method('DELETE')--}}
-{{--                                <button class="text-red-600 text-sm hover:underline">--}}
-{{--                                    Delete--}}
-{{--                                </button>--}}
-{{--                            </form>--}}
-{{--                        @endif--}}
-{{--                    </div>--}}
+        <script>
+            function toggleEdit(commentId) {
+                const text = document.getElementById(`comment-text-${commentId}`);
+                const form = document.getElementById(`edit-form-${commentId}`);
 
-{{--                    <p class="mt-2 text-white">--}}
-{{--                        {{ $comment->comment }}--}}
-{{--                    </p>--}}
-{{--                </div>--}}
-{{--            @endforeach--}}
-{{--        </div>--}}
-
-
-{{--        @if(auth()->check())--}}
-{{--            <form action="{{ route('courses.comments.store', $course->id) }}" method="POST" class="mb-6">--}}
-{{--                @csrf--}}
-{{--                <textarea--}}
-{{--                    name="comment"--}}
-{{--                    rows="3"--}}
-{{--                    class="w-full border rounded p-3"--}}
-{{--                    placeholder="Write your comment..."--}}
-{{--                    required--}}
-{{--                ></textarea>--}}
-
-{{--                <button type="submit"--}}
-{{--                        class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">--}}
-{{--                    Post Comment--}}
-{{--                </button>--}}
-{{--            </form>--}}
-{{--        @else--}}
-{{--            <p class="text-gray-500">Login to comment.</p>--}}
-{{--        @endif--}}
-
-
-
-
+                text.classList.toggle('hidden');
+                form.classList.toggle('hidden');
+            }
+        </script>
 
     </section>
+
 </x-layout>
+
+
+
