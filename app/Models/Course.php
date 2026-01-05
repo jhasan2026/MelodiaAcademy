@@ -41,4 +41,11 @@ class Course extends Model
     }
 
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
+    }
+
+
+
 }

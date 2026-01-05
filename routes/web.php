@@ -8,6 +8,7 @@ use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
 use App\Models\Course;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CourseCommentController;
 
 //-------------------------------------------------------------Dashboard---------------------------------------------------------------------------
 Route::view("/",'dashboard');
@@ -39,6 +40,15 @@ Route::controller(CourseController::class)->group(function () {
     Route::get('/courses/{course}', 'show')
         ->name("courses.show");
 
+});
+
+//---------------------------------------comments---------------------------------------------
+Route::middleware('auth')->group(function () {
+    Route::post('/courses/{course}/comments', [CourseCommentController::class, 'store'])
+        ->name('courses.comments.store');
+
+    Route::delete('/comments/{comment}', [CourseCommentController::class, 'destroy'])
+        ->name('comments.destroy');
 });
 
 
