@@ -111,24 +111,75 @@
         </div>
 
           @foreach($course->comments as $comment)
-            <article class="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
-            <footer class="flex justify-between items-center mb-2">
-                <div class="flex items-center">
-                    <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold"><img
-                            class="mr-2 w-6 h-6 rounded-full"
-                            src="{{ $comment->user->profile && $comment->user->profile->profile_pic ? asset($comment->user->profile->profile_pic) : asset('images/default.jpg') }}"
-                            alt="Michael Gough">{{ $comment->user->first_name . " " . $comment->user->last_name }}</p>
-                    <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate datetime="2022-02-08"
-                            title="February 8th, 2022">{{ $comment->created_at->diffForHumans() }}</time></p>
-                </div>
-            </footer>
-                {{-- Comment Text --}}
-                <div id="comment-text-{{ $comment->id }}">
-                    <p class="text-gray-500 dark:text-gray-400">
-                        {{ $comment->comment }}
-                    </p>
-                </div>
-            </article>
+              <article class="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
+                  <footer class="flex justify-between items-center mb-2">
+                      <div class="flex items-center">
+                          <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold"><img
+                                  class="mr-2 w-6 h-6 rounded-full"
+                                  src="{{ $comment->user->profile && $comment->user->profile->profile_pic ? asset($comment->user->profile->profile_pic) : asset('images/default.jpg') }}"
+                                  alt="Michael Gough">{{ $comment->user->first_name . " " . $comment->user->last_name }}</p>
+                          <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate datetime="2022-02-08"
+                                                                                    title="February 8th, 2022">{{ $comment->created_at->diffForHumans() }}</time></p>
+                      </div>
+
+                      <div class="flex relative overflow-visible">
+                          {{-- Show the Rating --}}
+                          <div class="flex mb-2">
+                              @for ($i = 1; $i <= 5; $i++)
+                                  @if($i <= $comment->rating)
+                                      <svg class="w-5 h-5 text-yellow-400 dark:text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                      </svg>
+                                  @else
+                                      <svg class="w-5 h-5 text-gray-300 dark:text-neutral-600" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                      </svg>
+                                  @endif
+                              @endfor
+                          </div>
+
+                      </div>
+
+
+                  </footer>
+                  {{-- Comment Text --}}
+                  <div id="comment-text-{{ $comment->id }}">
+                      <p class="text-gray-500 dark:text-gray-400">
+                          {{ $comment->comment }}
+                      </p>
+                  </div>
+
+                  {{-- Edit Form --}}
+                  @if(auth()->id() === $comment->user_id)
+                      <form id="edit-form-{{ $comment->id }}"
+                            action="{{ route('comments.update', $comment->id) }}"
+                            method="POST"
+                            class="hidden mt-4">
+                          @csrf
+                          @method('PUT')
+
+                          <textarea name="comment"
+                                    rows="4"
+                                    class="w-full p-2 text-sm text-gray-800 border rounded-lg "
+                                    required>{{ $comment->comment }}</textarea>
+
+                          <div class="flex gap-2 mt-2">
+                              <button type="submit"
+                                      class="px-3 py-1 text-sm text-white bg-indigo-600 rounded hover:bg-indigo-700">
+                                  Update
+                              </button>
+
+                              <button type="button"
+                                      onclick="toggleEdit({{ $comment->id }})"
+                                      class="px-3 py-1 text-sm bg-gray-300 rounded hover:bg-gray-400">
+                                  Cancel
+                              </button>
+                          </div>
+                      </form>
+                  @endif
+
+
+              </article>
           @endforeach
       </div>
     </section>

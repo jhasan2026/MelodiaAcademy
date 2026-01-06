@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CourseEnrollSeeder::class,
             CommentSeeder::class,
+            AssignedCourseSeeder::class,
         ]);
     }
 }

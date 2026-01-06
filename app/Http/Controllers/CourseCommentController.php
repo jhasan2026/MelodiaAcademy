@@ -14,12 +14,14 @@ class CourseCommentController extends Controller
     {
         $request->validate([
             'comment' => 'required|string|max:1000',
+            'rating'    => 'required|integer|min:1|max:5',
         ]);
 
         Comment::create([
             'course_id' => $course->id,
             'user_id'   => Auth::id(),
             'comment'   => $request->comment,
+            'rating'    => $request->rating,
         ]);
 
         return redirect()

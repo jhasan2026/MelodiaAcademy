@@ -5,24 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class AssignedCourse extends Model
 {
+    /** @use HasFactory<\Database\Factories\AssignedCourseFactory> */
     use HasFactory;
-
     protected $fillable = [
         'course_id',
-        'user_id',
-        'comment',
-        'rating',
+        'instructor_id',
     ];
 
+    // Relation to Course
     public function course()
     {
         return $this->belongsTo(Course::class);
     }
 
-    public function user()
+    // Relation to Instructor (User model)
+    public function instructor()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'instructor_id');
     }
 }

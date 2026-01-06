@@ -67,20 +67,43 @@
             <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Review</h2>
         </div>
 
-          @if(auth()->check())
-              <form class="mb-6" action="{{ route('courses.comments.store', $course->id) }}" method="POST">
-                  @csrf
-                  <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+          @if(auth()->check())<form class="mb-6" action="{{ route('courses.comments.store', $course->id) }}" method="POST">
+              @csrf
+
+              <div class="flex">
+                  <!-- Comment Box -->
+                  <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 w-5/6">
                       <label for="comment" class="sr-only">Your comment</label>
                       <textarea id="comment" name="comment" rows="6"
                                 class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
                                 placeholder="Write a comment..." required></textarea>
                   </div>
-                  <button type="submit"
-                          class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-indigo-500 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                      Post comment
-                  </button>
-              </form>
+
+                  <!-- Rating Stars -->
+                  <div class="mt-2 ml-8">
+                      <label for="rating" class="text-gray-800 font-bold ">Rating:</label>
+
+                      <!-- Hidden input to store rating value -->
+                      <input type="hidden" name="rating" id="rating" value="0">
+
+                      <div class="flex items-center mt-2" id="star-rating">
+                          @for ($i = 1; $i <= 5; $i++)
+                              <button type="button" data-value="{{ $i }}" class="star size-5 inline-flex justify-center items-center text-2xl rounded-full text-gray-300 hover:text-yellow-400 dark:text-neutral-600 dark:hover:text-yellow-500">
+                                  <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                  </svg>
+                              </button>
+                          @endfor
+                      </div>
+                  </div>
+              </div>
+
+              <button type="submit"
+                      class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-indigo-500 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                  Post comment
+              </button>
+          </form>
+
           @endif
 
 
@@ -97,54 +120,79 @@
                     <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate datetime="2022-02-08"
                             title="February 8th, 2022">{{ $comment->created_at->diffForHumans() }}</time></p>
                 </div>
-                @if(auth()->id() === $comment->user_id)
-                    <button
-                        id="dropdownCommentButton-{{ $comment->id }}"
-                        data-dropdown-toggle="dropdownComment-{{ $comment->id }}"
-                        type="button"
-                        class="inline-flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-100"
-                    >
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                            <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                        </svg>
-                        <span class="sr-only">Comment settings</span>
-                    </button>
-                @endif
-                <!-- Dropdown menu -->
-                <div
-                    id="dropdownComment-{{ $comment->id }}"
-                    class="absolute right-0 mt-2 hidden z-50 w-36
+
+                <div class="flex relative overflow-visible">
+                    {{-- Show the Rating --}}
+                    <div class="flex mb-2">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if($i <= $comment->rating)
+                                <svg class="w-5 h-5 text-yellow-400 dark:text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                </svg>
+                            @else
+                                <svg class="w-5 h-5 text-gray-300 dark:text-neutral-600" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                </svg>
+                            @endif
+                        @endfor
+                    </div>
+
+
+
+                    @if(auth()->id() === $comment->user_id)
+                        <button
+                            id="dropdownCommentButton-{{ $comment->id }}"
+                            data-dropdown-toggle="dropdownComment-{{ $comment->id }}"
+                            type="button"
+                            class="inline-flex items-center p-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-100 absolute right-[-50px]"
+                        >
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                                <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+                            </svg>
+                            <span class="sr-only">Comment settings</span>
+                        </button>
+                    @endif
+
+
+
+                    <!-- Dropdown menu -->
+                    <div
+                        id="dropdownComment-{{ $comment->id }}"
+                        class="absolute right-0 mt-2 hidden z-50 w-36
                            bg-white rounded-lg shadow-lg
                            divide-y divide-gray-100
                              dark:bg-gray-700 dark:divide-gray-600"
-                >
-                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
-                        <li>
-                            <button
-                                type="button"
-                                onclick="toggleEdit({{ $comment->id }})"
-                                class="block w-full text-left px-4 py-2
-                       hover:bg-gray-100 dark:hover:bg-gray-600"
-                            >
-                                Edit
-                            </button>
-                        </li>
-
-                        <li>
-                            <form action="{{ route('comments.destroy', $comment->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
+                    >
+                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
+                            <li>
                                 <button
-                                    type="submit"
+                                    type="button"
+                                    onclick="toggleEdit({{ $comment->id }})"
                                     class="block w-full text-left px-4 py-2
-                           hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                       hover:bg-gray-100 dark:hover:bg-gray-600"
                                 >
-                                    Delete
+                                    Edit
                                 </button>
-                            </form>
-                        </li>
-                    </ul>
+                            </li>
+
+                            <li>
+                                <form action="{{ route('comments.destroy', $comment->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button
+                                        type="submit"
+                                        class="block w-full text-left px-4 py-2
+                           hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                    >
+                                        Delete
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
+
 
             </footer>
                 {{-- Comment Text --}}
@@ -198,6 +246,46 @@
                 text.classList.toggle('hidden');
                 form.classList.toggle('hidden');
             }
+
+
+                document.addEventListener('DOMContentLoaded', () => {
+                const stars = document.querySelectorAll('#star-rating .star');
+                const ratingInput = document.getElementById('rating');
+                let currentRating = 0;
+
+                stars.forEach(star => {
+                star.addEventListener('mouseover', () => {
+                const val = parseInt(star.dataset.value);
+                highlightStars(val);
+            });
+
+                star.addEventListener('mouseout', () => {
+                highlightStars(currentRating);
+            });
+
+                star.addEventListener('click', () => {
+                currentRating = parseInt(star.dataset.value);
+                ratingInput.value = currentRating;
+                highlightStars(currentRating);
+            });
+            });
+
+                function highlightStars(rating) {
+                stars.forEach(star => {
+                if (parseInt(star.dataset.value) <= rating) {
+                star.classList.remove('text-gray-300', 'dark:text-neutral-600');
+                star.classList.add('text-yellow-400', 'dark:text-yellow-500');
+            } else {
+                star.classList.add('text-gray-300', 'dark:text-neutral-600');
+                star.classList.remove('text-yellow-400', 'dark:text-yellow-500');
+            }
+            });
+            }
+            });
+
+
+
+
         </script>
 
     </section>

@@ -7,9 +7,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Comment>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AssignedCourse>
  */
-class CommentFactory extends Factory
+class AssignedCourseFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,9 +20,8 @@ class CommentFactory extends Factory
     {
         return [
             'course_id' => Course::inRandomOrder()->first()->id,
-            'user_id'   => User::inRandomOrder()->first()->id,
-            'comment'   => $this->faker->paragraph(),
-            'rating'    => $this->faker->numberBetween(1, 5), // rating 1-5
+            'instructor_id' => User::where('role', 'instructor')->inRandomOrder()->first()->id,
+
         ];
     }
 }

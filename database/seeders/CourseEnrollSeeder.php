@@ -63,5 +63,7 @@ class CourseEnrollSeeder extends Seeder
                 'enroll_status' => 'rejected',
             ]);
         }
+
+
     }
 }

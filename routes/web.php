@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AssignedCourseController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseEnrollController;
 use App\Http\Controllers\CourseTopicController;
+use App\Http\Controllers\InstructorAssignedCourse;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
@@ -92,6 +94,35 @@ Route::controller(CourseEnrollController::class)->group(function () {
     });
 
 });
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/assigned-courses', [AssignedCourseController::class, 'index'])->name('assigned-courses.index');
+    Route::get('/assigned-courses/create', [AssignedCourseController::class, 'create'])->name('assigned-courses.create');
+    Route::post('/assigned-courses', [AssignedCourseController::class, 'store'])->name('assigned-courses.store');
+    Route::get('/assigned-courses/{assignedCourse}/edit', [AssignedCourseController::class, 'edit'])->name('assigned-courses.edit');
+    Route::put('/assigned-courses/{assignedCourse}', [AssignedCourseController::class, 'update'])->name('assigned-courses.update');
+    Route::delete('/assigned-courses/{assignedCourse}', [AssignedCourseController::class, 'destroy'])->name('assigned-courses.destroy');
+});
+
+Route::get("/instructor_assigned_courses", [InstructorAssignedCourse::class,'index'])
+    ->name("instructor_assigned_courses.index");
+
+Route::get("/instructor_assigned_courses/{course}", [InstructorAssignedCourse::class,'show'])
+    ->name("instructor_assigned_courses.show");
+
+// routes/web.php
+
+Route::middleware('auth')->group(function () {
+    Route::get(
+        '/instructor_assigned_courses/{course}/students',
+        [InstructorAssignedCourse::class, 'students']
+    )->name('instructor.courses.students');
+});
+
+
+
+
 
 //-------------------------------------------------------------Course Topic---------------------------------------------------------------------------
 Route::get('/courses/{course}/topics/create', [CourseTopicController::class, 'create'])

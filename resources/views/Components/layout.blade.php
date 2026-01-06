@@ -66,17 +66,17 @@
                             @elseif($user->role === 'instructor')
                                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
                                 <x-nav-link href="/courses" :active="request()->is('courses') || request()->is('courses/*')">Course List</x-nav-link>
-                                <x-nav-link href="/assigned_course" :active="request()->is('assigned_course') || request()->is('assigned_course/*')">Assigned Course</x-nav-link>
+                                <x-nav-link href="/instructor_assigned_courses" :active="request()->is('instructor_assigned_courses') || request()->is('instructor_assigned_courses/*')">Assigned Course</x-nav-link>
                                 <x-nav-link >My Schedule</x-nav-link>
                                  <x-nav-link >Chat</x-nav-link>
                                 <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>
 
                             @elseif($user->role === 'admin')
                                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
-                                <x-nav-link href="/courses" :active="request()->is('courses') || request()->is('courses/*')">Course List</x-nav-link>
+                                <x-nav-link href="/courses" :active="request()->is('courses') || request()->is('courses/*') && !request()->is('courses/create')">Course List</x-nav-link>
                                 <x-nav-link href="/courses/create" :active="request()->is('courses/create')">New Course</x-nav-link>
-                                <x-nav-link >Assign Course</x-nav-link>
-                                <x-nav-link href="/student_enrolment"> Student Enrollment</x-nav-link>
+                                <x-nav-link href="/assigned-courses" :active="request()->is('assigned-courses') || request()->is('assigned-courses/*')">Assign Course</x-nav-link>
+                                <x-nav-link href="/student_enrolment" :active="request()->is('student_enrolment')"> Student Enrollment</x-nav-link>
                                 <x-nav-link >My Schedule</x-nav-link>
                                 <x-nav-link >Chat</x-nav-link>
                                 <x-nav-link href="/contact-us" :active="request()->is('contact-us')" >Contact Us</x-nav-link>

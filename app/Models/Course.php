@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Course extends Model
 {
@@ -37,13 +38,18 @@ class Course extends Model
 
     public function enrollment(): HasMany
     {
-        return $this->hasMany(CourseEnroll::class);
+        return $this->hasMany(CourseEnroll::class, 'course_id');
     }
 
 
     public function comments()
     {
         return $this->hasMany(Comment::class)->latest();
+    }
+
+    public function assigned_courses(): HasMany
+    {
+        return $this->hasMany(AssignedCourse::class, 'course_id');
     }
 
 
