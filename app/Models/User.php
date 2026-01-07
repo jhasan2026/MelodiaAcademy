@@ -73,5 +73,12 @@ class User extends Authenticatable
 
         return null;
     }
+    public function enrolledCourses()
+    {
+        // ✅ If your pivot table name is different, change it here
+        return $this->belongsToMany(\App\Models\Course::class, 'course_enrollments', 'student_id', 'course_id')
+            ->withTimestamps();
+    }
+
 
 }

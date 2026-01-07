@@ -50,7 +50,7 @@
                                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
                                 <x-nav-link href="/courses" :active="request()->is('courses') || request()->is('courses/*')">Course List</x-nav-link>
                                 <x-nav-link href="/my_course" :active="request()->is('my_course') || request()->is('my_course/*')">My Course</x-nav-link>
-                                <x-nav-link>My Schedule</x-nav-link>
+                                <x-nav-link href="student/weekly-routine" :active="request()->is('student/weekly-routine')">My Schedule</x-nav-link>
                                 <x-nav-link>Chat</x-nav-link>
                                 <x-nav-link href="/contact-us" :active="request()->is('contact-us')">Contact Us</x-nav-link>
 
@@ -242,5 +242,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
 <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 </body>
 </html>

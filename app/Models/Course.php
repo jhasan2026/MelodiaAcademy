@@ -69,6 +69,30 @@ class Course extends Model
             ->wherePivot('enroll_status', 'approved');
     }
 
+    public function assignments()
+    {
+        return $this->hasManyThrough(
+            \App\Models\Assignment::class,
+            \App\Models\LessonMaterial::class,
+            'course_id', // FK on lesson_materials table...
+            'lesson_id', // FK on assignments table...
+            'id',        // Local key on courses table...
+            'id'         // Local key on lesson_materials table...
+        );
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(CourseSchedule::class);
+    }
+
+    // assuming students enrolled via pivot (course_user)
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'course_user')->withTimestamps();
+    }
+
+
 
 
 

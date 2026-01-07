@@ -1,15 +1,19 @@
 <?php
 
 use App\Http\Controllers\AssignedCourseController;
+use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\AssignmentSubmissionController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseEnrollController;
 use App\Http\Controllers\CourseTopicController;
 use App\Http\Controllers\InstructorAssignedCourse;
+use App\Http\Controllers\InstructorScheduleController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\LessonMaterialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\StudentScheduleController;
 use App\Models\Course;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseCommentController;
@@ -82,6 +86,8 @@ Route::controller(CourseEnrollController::class)->group(function () {
 
         Route::get('my_course/{course}', 'show')
             ->name('course-enroll.show');
+        Route::get('my_course/{course}/materials', 'course_materials')
+            ->name('course-enroll.course_materials');
 
         //-------------------------------------------------------------
         // Student Enrolment (Admin/Teacher)
@@ -182,6 +188,45 @@ Route::prefix('instructor_assigned_courses/{course}')->group(function () {
     Route::put('lesson_materials/{lessonMaterial}', [LessonMaterialController::class, 'update'])->name('lesson_materials.update');
     Route::delete('lesson_materials/{lessonMaterial}', [LessonMaterialController::class, 'destroy'])->name('lesson_materials.destroy');
 });
+
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/lessons/{lesson}/assignments/create', [AssignmentController::class, 'create'])->name('assignments.create');
+    Route::post('/lessons/{lesson}/assignments', [AssignmentController::class, 'store'])->name('assignments.store');
+
+    Route::get('/assignments/{assignment}/edit', [AssignmentController::class, 'edit'])->name('assignments.edit');
+    Route::put('/assignments/{assignment}', [AssignmentController::class, 'update'])->name('assignments.update');
+    Route::post('/assignments/{assignment}/publish', [AssignmentController::class, 'publish'])->name('assignments.publish');
+
+    Route::get('/assignments/{assignment}', [AssignmentController::class, 'show'])->name('assignments.show');
+    Route::post('/assignments/{assignment}/submit', [AssignmentSubmissionController::class, 'submit'])->name('assignments.submit');
+
+    // Teacher grading dashboard
+    Route::get('/assignments/{assignment}/submissions', [AssignmentController::class, 'submissions'])->name('assignments.submissions');
+    Route::post('/assignments/{assignment}/submissions/{submission}/grade', [AssignmentSubmissionController::class, 'grade'])->name('assignments.grade');
+});
+
+
+
+Route::middleware(['auth'])->group(function () {
+
+    // Student
+    Route::get('/student/weekly-routine', [StudentScheduleController::class, 'page'])
+        ->name('student.schedule.page');
+
+    Route::get('/api/student/schedule', [StudentScheduleController::class, 'events'])
+        ->name('student.schedule.events');
+
+    // Instructor
+    Route::get('/instructor/weekly-routine', [InstructorScheduleController::class, 'page'])
+        ->name('instructor.schedule.page');
+
+    Route::get('/api/instructor/schedule', [InstructorScheduleController::class, 'events'])
+        ->name('instructor.schedule.events');
+});
+
 
 Route::view("/contact-us",'contact-us');
 

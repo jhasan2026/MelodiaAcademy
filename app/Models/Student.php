@@ -30,5 +30,17 @@ class Student extends Model
             ->withPivot(['enroll_status']);
     }
 
+    public function enrolledCourses()
+    {
+        return $this->belongsToMany(
+            Course::class,
+            'course_enrolls',
+            'student_id',
+            'course_id'
+        )
+            ->withPivot('enroll_status')
+            ->withTimestamps();
+    }
+
 
 }

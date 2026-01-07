@@ -18,10 +18,10 @@ class LessonMaterialFactory extends Factory
     public function definition(): array
     {
         return [
-            'course_id' => Course::factory(),
-            'title' => $this->faker->sentence(3),
-            // seeded/demo placeholder path (real uploads will overwrite)
-            'file_path' => 'lesson_materials/demo.pdf',
+            'course_id' => Course::factory(), // auto-create course if not provided
+            'title' => $this->faker->sentence(4),
+            'description' => $this->faker->optional()->paragraph(),
+            'file_path' => 'lesson_materials/demo.pdf', // fake file
         ];
     }
 }

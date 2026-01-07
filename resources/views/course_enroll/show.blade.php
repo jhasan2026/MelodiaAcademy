@@ -4,7 +4,12 @@
         Course
     </x-slot:heading>
 
-    <section class="body-font bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+    <x-sidenavbar-container>
+
+        <x-sidenavbar-student :course="$course"></x-sidenavbar-student>
+
+
+        <section class="w-full body-font bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white ml-4">
         <!-- Hero -->
         <div class="container mx-auto px-5 py-16">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
@@ -62,8 +67,8 @@
 
                     <ul class="divide-y divide-white/10">
                         @foreach($course->course_topic()->oldest()->get() as $topic)
-                            <li class="px-6 py-4 hover:bg-white/5 transition-colors">
-                                <x-topic-list>{{ $topic->topic }}</x-topic-list>
+                            <li class="px-6 py-4 hover:bg-white/5 transition-colors text-white">
+                                <x-topic-list class="text-white">{{ $topic->topic }}</x-topic-list>
                             </li>
                         @endforeach
                     </ul>
@@ -311,4 +316,5 @@
             });
         </script>
     </section>
+    </x-sidenavbar-container>
 </x-layout>

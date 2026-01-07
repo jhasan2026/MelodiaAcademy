@@ -8,70 +8,44 @@ use Illuminate\Database\Seeder;
 
 class CourseEnrollSeeder extends Seeder
 {
-    public function run(): void{
-        // Pending
-        $pendingCourses = Course::orderBy('id')->take(2)->pluck('id');
+    public function run(): void
+    {
+        // Get all course ids once (safe even if < 10)
+        $courseIds = Course::orderBy('id')->pluck('id')->values();
 
-        foreach ($pendingCourses as $courseId) {
-            CourseEnroll::create([
-                'course_id'     => $courseId,
-                'student_id'    => 1,
-                'enroll_status' => 'pending',
-            ]);
-        }
+        // Helper to assign list of course ids to a student with status
+        $assign = function (int $studentId, array $ids, string $status) {
+            foreach ($ids as $courseId) {
+                CourseEnroll::updateOrCreate(
+                    [
+                        'student_id' => $studentId,
+                        'course_id'  => $courseId,
+                    ],
+                    [
+                        'enroll_status' => $status,
+                    ]
+                );
+            }
+        };
 
-        // Approved
-        $approvedCourses = Course::orderBy('id')->skip(2)->take(2)->pluck('id');
+        /**
+         * STUDENT 1
+         * first 5 courses:
+         * - 2 pending
+         * - 2 approved
+         * - 1 rejected
+         */
+        $assign(1, $courseIds->slice(0, 2)->all(), 'pending');
+        $assign(1, $courseIds->slice(2, 2)->all(), 'approved');
+        $assign(1, $courseIds->slice(4, 1)->all(), 'rejected');
 
-        foreach ($approvedCourses as $courseId) {
-            CourseEnroll::create([
-                'course_id'     => $courseId,
-                'student_id'    => 1,
-                'enroll_status' => 'approved',
-            ]);
-        }
-
-        // Rejected
-        $rejectedCourse = Course::orderBy('id')->skip(4)->take(1)->pluck('id');
-
-        foreach ($rejectedCourse as $courseId) {
-            CourseEnroll::create([
-                'course_id'     => $courseId,
-                'student_id'    => 1,
-                'enroll_status' => 'rejected',
-            ]);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | STUDENT 2
-        |--------------------------------------------------------------------------
-        | Next 5 courses:
-        |  - 2 approved
-        |  - 3 rejected
-        */
-
-        // Approved
-        $approvedCoursesStudent2 = Course::orderBy('id')->skip(5)->take(2)->pluck('id');
-
-        foreach ($approvedCoursesStudent2 as $courseId) {
-            CourseEnroll::create([
-                'course_id'     => $courseId,
-                'student_id'    => 2,
-                'enroll_status' => 'approved',
-            ]);
-        }
-
-        // Rejected
-        $rejectedCoursesStudent2 = Course::orderBy('id')->skip(7)->take(3)->pluck('id');
-
-        foreach ($rejectedCoursesStudent2 as $courseId) {
-            CourseEnroll::create([
-                'course_id'     => $courseId,
-                'student_id'    => 2,
-                'enroll_status' => 'rejected',
-            ]);
-        }
-
+        /**
+         * STUDENT 2
+         * next 5 courses:
+         * - 2 approved
+         * - 3 rejected
+         */
+        $assign(2, $courseIds->slice(5, 2)->all(), 'approved');
+        $assign(2, $courseIds->slice(7, 3)->all(), 'rejected');
     }
 }

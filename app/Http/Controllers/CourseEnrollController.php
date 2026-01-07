@@ -90,6 +90,36 @@ class CourseEnrollController extends Controller
         return back()->with('success', 'Enrollment rejected.');
     }
 
+    public function course_materials(Course  $course)
+    {
+        $userId = Auth::id();
+
+        // ✅ Security: ensure student is enrolled (adjust relation/table name to your project)
+//        abort_unless(
+//            Auth::user()->enrolledCourses()->whereKey($course->id)->exists(),
+//            403
+//        );
+
+        // Lesson materials (your table is lesson_materials)
+        $materials = $course->lessonMaterials()
+            ->latest()
+            ->get();
+
+        // Assignments linked to lesson materials by lesson_id (lesson_materials.id)
+        // Load questions for quiz UI badges + submission status for this student
+        $assignments = $course->assignments()
+            ->with(['lesson', 'questions'])
+            ->latest()
+            ->get()
+            ->map(function ($a) use ($userId) {
+                $a->my_submission = $a->submissions()->where('student_id', $userId)->first();
+                return $a;
+            });
+
+        return view('course_enroll.course_materials', compact('course', 'materials', 'assignments'));
+
+    }
+
 
 
 }
