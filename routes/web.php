@@ -5,12 +5,15 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseEnrollController;
 use App\Http\Controllers\CourseTopicController;
 use App\Http\Controllers\InstructorAssignedCourse;
+use App\Http\Controllers\LessonController;
+use App\Http\Controllers\LessonMaterialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
 use App\Models\Course;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseCommentController;
+use App\Http\Controllers\InstructorAttendanceController;
 
 //-------------------------------------------------------------Dashboard---------------------------------------------------------------------------
 Route::view("/",'dashboard');
@@ -162,3 +165,23 @@ Route::middleware(['auth'])->group(function () {
 Route::view("/contact-us",'contact-us');
 
 
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/instructor_assigned_courses/{assignedCourse}/attendents', [InstructorAttendanceController::class, 'index'])
+        ->name('instructor.attendance.index');
+
+    Route::post('/instructor_assigned_courses/{assignedCourse}/attendents', [InstructorAttendanceController::class, 'store'])
+        ->name('instructor.attendance.store');
+});
+
+
+
+Route::prefix('instructor_assigned_courses/{course}')->group(function () {
+    Route::get('lesson_materials', [LessonMaterialController::class, 'index'])->name('lesson_materials.index');
+    Route::get('lesson_materials/create', [LessonMaterialController::class, 'create'])->name('lesson_materials.create');
+    Route::post('lesson_materials', [LessonMaterialController::class, 'store'])->name('lesson_materials.store');
+
+    Route::get('lesson_materials/{lessonMaterial}/edit', [LessonMaterialController::class, 'edit'])->name('lesson_materials.edit');
+    Route::put('lesson_materials/{lessonMaterial}', [LessonMaterialController::class, 'update'])->name('lesson_materials.update');
+    Route::delete('lesson_materials/{lessonMaterial}', [LessonMaterialController::class, 'destroy'])->name('lesson_materials.destroy');
+});

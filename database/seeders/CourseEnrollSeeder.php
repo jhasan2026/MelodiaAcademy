@@ -42,8 +42,6 @@ class CourseEnrollSeeder extends Seeder
         }
 
 
-
-
         // student_id = 2 → next 5 courses
         $coursesForStudent2 = Course::skip(5)->take(2)->pluck('id');
 
@@ -63,6 +61,7 @@ class CourseEnrollSeeder extends Seeder
                 'enroll_status' => 'rejected',
             ]);
         }
+
 
 
     }

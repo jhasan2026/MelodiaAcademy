@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             CourseEnrollSeeder::class,
             CommentSeeder::class,
             AssignedCourseSeeder::class,
+            LessonMaterialSeeder::class,
+            AttendanceSeeder::class,
         ]);
     }
 }

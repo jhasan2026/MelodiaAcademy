@@ -9,6 +9,8 @@ class AssignedCourse extends Model
 {
     /** @use HasFactory<\Database\Factories\AssignedCourseFactory> */
     use HasFactory;
+
+
     protected $fillable = [
         'course_id',
         'instructor_id',

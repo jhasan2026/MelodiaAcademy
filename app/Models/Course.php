@@ -52,6 +52,25 @@ class Course extends Model
         return $this->hasMany(AssignedCourse::class, 'course_id');
     }
 
+    public function lessonMaterials()
+    {
+        return $this->hasMany(LessonMaterial::class);
+    }
+
+    public function courseEnrolls()
+    {
+        return $this->hasMany(\App\Models\CourseEnroll::class);
+    }
+
+    public function approvedStudents()
+    {
+        return $this->belongsToMany(Student::class, 'course_enrolls')
+            ->withPivot('enroll_status')
+            ->wherePivot('enroll_status', 'approved');
+    }
+
+
+
 
 
 }

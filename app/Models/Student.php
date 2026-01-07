@@ -24,4 +24,11 @@ class Student extends Model
         'gender' => 'string',
     ];
 
+    public function courses()
+    {
+        return $this->belongsToMany(\App\Models\Course::class, 'course_enrolls')
+            ->withPivot(['enroll_status']);
+    }
+
+
 }
