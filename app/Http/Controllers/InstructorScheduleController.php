@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssignedCourse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -14,29 +15,27 @@ class InstructorScheduleController extends Controller
 
     public function events(Request $request)
     {
-        $instructor = $request->user(); // instructor user
+        $user = $request->user();
 
-        $start = $request->query('start')
-            ? Carbon::parse($request->query('start'))
-            : now()->startOfWeek();
+        // Find instructor id for this user
+        // Assumes instructors table has user_id
+        $instructor = \App\Models\Instructor::where('user_id', $user->id)->firstOrFail();
 
-        $end = $request->query('end')
-            ? Carbon::parse($request->query('end'))
-            : now()->endOfWeek();
+        $start = $request->query('start') ? Carbon::parse($request->query('start')) : now()->startOfWeek();
+        $end   = $request->query('end')   ? Carbon::parse($request->query('end'))   : now()->endOfWeek();
 
-        // Courses assigned to this instructor (courses.user_id)
-        $courses = \App\Models\Course::query()
-            ->where('user_id', $instructor->id)
-            ->with('schedules')
+        // Get assigned courses for this instructor
+        $assignedCourses = AssignedCourse::where('instructor_id', $instructor->id)
+            ->with(['course.schedules'])
             ->get();
 
         $events = [];
 
-        foreach ($courses as $course) {
+        foreach ($assignedCourses as $assigned) {
+            $course = $assigned->course;
+
             foreach ($course->schedules as $slot) {
-                $slotDate = $start->copy()
-                    ->startOfWeek(Carbon::SUNDAY)
-                    ->addDays((int) $slot->day_of_week);
+                $slotDate = $start->copy()->startOfWeek(Carbon::SUNDAY)->addDays((int) $slot->day_of_week);
 
                 if ($slot->starts_on && $slotDate->lt($slot->starts_on)) continue;
                 if ($slot->ends_on && $slotDate->gt($slot->ends_on)) continue;

@@ -58,7 +58,7 @@
                                 <x-nav-link href="/" :active="request()->is('/')">Dashboard</x-nav-link>
                                 <x-nav-link href="/courses" :active="request()->is('courses') || request()->is('courses/*')">Course List</x-nav-link>
                                 <x-nav-link href="/instructor_assigned_courses" :active="request()->is('instructor_assigned_courses') || request()->is('instructor_assigned_courses/*')">Assigned Course</x-nav-link>
-                                <x-nav-link>My Schedule</x-nav-link>
+                                <x-nav-link href="instructor/weekly-routine" :active="request()->is('instructor/weekly-routine')">My Schedule</x-nav-link>
                                 <x-nav-link>Chat</x-nav-link>
                                 <x-nav-link href="/contact-us" :active="request()->is('contact-us')">Contact Us</x-nav-link>
 

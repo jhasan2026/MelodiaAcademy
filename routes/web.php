@@ -210,19 +210,17 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::middleware(['auth'])->group(function () {
 
+Route::middleware(['auth'])->group(function () {
     // Student
     Route::get('/student/weekly-routine', [StudentScheduleController::class, 'page'])
         ->name('student.schedule.page');
-
     Route::get('/api/student/schedule', [StudentScheduleController::class, 'events'])
         ->name('student.schedule.events');
 
     // Instructor
     Route::get('/instructor/weekly-routine', [InstructorScheduleController::class, 'page'])
         ->name('instructor.schedule.page');
-
     Route::get('/api/instructor/schedule', [InstructorScheduleController::class, 'events'])
         ->name('instructor.schedule.events');
 });
