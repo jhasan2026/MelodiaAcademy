@@ -117,13 +117,9 @@ Route::get("/instructor_assigned_courses/{course}", [InstructorAssignedCourse::c
 // routes/web.php
 
 Route::middleware('auth')->group(function () {
-    Route::get(
-        '/instructor_assigned_courses/{course}/students',
-        [InstructorAssignedCourse::class, 'students']
+    Route::get('/instructor_assigned_courses/{course}/students', [InstructorAssignedCourse::class, 'students']
     )->name('instructor.courses.students');
 });
-
-
 
 
 
@@ -162,17 +158,18 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::view("/contact-us",'contact-us');
-
-
-
 Route::middleware(['auth'])->group(function () {
-    Route::get('/instructor_assigned_courses/{assignedCourse}/attendents', [InstructorAttendanceController::class, 'index'])
-        ->name('instructor.attendance.index');
 
-    Route::post('/instructor_assigned_courses/{assignedCourse}/attendents', [InstructorAttendanceController::class, 'store'])
-        ->name('instructor.attendance.store');
+    Route::get(
+        '/instructor_assigned_courses/{course}/attendents', [InstructorAttendanceController::class, 'index']
+    )->name('instructor.attendance.index');
+
+    Route::post(
+        '/instructor_assigned_courses/{course}/attendents', [InstructorAttendanceController::class, 'store']
+    )->name('instructor.attendance.store');
+
 });
+
 
 
 
@@ -185,3 +182,7 @@ Route::prefix('instructor_assigned_courses/{course}')->group(function () {
     Route::put('lesson_materials/{lessonMaterial}', [LessonMaterialController::class, 'update'])->name('lesson_materials.update');
     Route::delete('lesson_materials/{lessonMaterial}', [LessonMaterialController::class, 'destroy'])->name('lesson_materials.destroy');
 });
+
+Route::view("/contact-us",'contact-us');
+
+

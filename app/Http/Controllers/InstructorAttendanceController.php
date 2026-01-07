@@ -1,28 +1,46 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\AttendanceRecord;
 use App\Models\AttendanceSession;
 use App\Models\AssignedCourse;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class InstructorAttendanceController extends Controller
 {
-    public function index(Request $request, AssignedCourse $assignedCourse)
+    /**
+     * Ensure the current user is an instructor and is assigned to this course.
+     * (Authorization only — attendance_sessions will use course_id in DB.)
+     */
+    protected function ensureInstructorAssigned(Course $course): AssignedCourse
     {
+        $user = auth()->user();
 
-        $date = $request->date ? date('Y-m-d', strtotime($request->date)) : now()->toDateString();
+        abort_unless($user && $user->instructor, 403, 'Instructor profile not found.');
 
-        $course = $assignedCourse->course;
+        return AssignedCourse::where('course_id', $course->id)
+            ->where('instructor_id', $user->instructor->id)
+            ->firstOrFail();
+    }
 
-        // ✅ students from your course_enrolls table, only approved
+    public function index(Request $request, Course $course)
+    {
+        // Auth check (instructor must be assigned to this course)
+        $assignedCourse = $this->ensureInstructorAssigned($course);
+
+        $date = $request->filled('date')
+            ? date('Y-m-d', strtotime($request->date))
+            : now()->toDateString();
+
         $students = $course->approvedStudents()
-            ->with('user') // 👈 eager load users
+            ->with('user')
             ->orderBy('students.id')
             ->get();
 
-
+        // ✅ Use course_id (NOT assigned_course_id)
         $session = AttendanceSession::where('course_id', $course->id)
             ->whereDate('attendance_date', $date)
             ->with('records')
@@ -40,14 +58,14 @@ class InstructorAttendanceController extends Controller
         }
 
         return view('instructor.attendance.index', compact(
-            'assignedCourse', 'course', 'students', 'date', 'session', 'existing'
+            'course', 'assignedCourse', 'students', 'date', 'session', 'existing'
         ));
     }
 
-    public function store(Request $request, AssignedCourse $assignedCourse)
+    public function store(Request $request, Course $course)
     {
-
-        $course = $assignedCourse->course;
+        // Auth check (instructor must be assigned to this course)
+        $assignedCourse = $this->ensureInstructorAssigned($course);
 
         $validated = $request->validate([
             'attendance_date' => ['required', 'date'],
@@ -61,24 +79,40 @@ class InstructorAttendanceController extends Controller
         $date = date('Y-m-d', strtotime($validated['attendance_date']));
 
         $studentIds = array_map('intval', array_keys($validated['attendance']));
+
         $approvedIds = $course->approvedStudents()
             ->whereIn('students.id', $studentIds)
             ->pluck('students.id')
             ->all();
+
         $approvedSet = array_flip($approvedIds);
 
         DB::transaction(function () use ($course, $date, $validated, $approvedSet) {
+            // ✅ Use course_id + attendance_date as the session identity
             $session = AttendanceSession::updateOrCreate(
-                ['course_id' => $course->id, 'attendance_date' => $date],
-                ['marked_by' => auth()->id(), 'note' => $validated['note'] ?? null]
+                [
+                    'course_id' => $course->id,
+                    'attendance_date' => $date,
+                ],
+                [
+                    'marked_by' => auth()->id(),
+                    'note' => $validated['note'] ?? null,
+                ]
             );
 
             foreach ($validated['attendance'] as $studentId => $row) {
-                $studentId = (int)$studentId;
-                if (!isset($approvedSet[$studentId])) continue;
+                $studentId = (int) $studentId;
+
+                // Only save for approved students
+                if (!isset($approvedSet[$studentId])) {
+                    continue;
+                }
 
                 AttendanceRecord::updateOrCreate(
-                    ['attendance_session_id' => $session->id, 'student_id' => $studentId],
+                    [
+                        'attendance_session_id' => $session->id,
+                        'student_id' => $studentId,
+                    ],
                     [
                         'status' => $row['status'],
                         'remark' => $row['remark'] ?? null,
@@ -88,8 +122,9 @@ class InstructorAttendanceController extends Controller
             }
         });
 
+        // Redirect wherever you prefer; this is safe and consistent
         return redirect()
-            ->route('instructor.attendance.index', ['assignedCourse' => $assignedCourse->id, 'date' => $date])
+            ->back()
             ->with('success', 'Attendance saved successfully.');
     }
 }

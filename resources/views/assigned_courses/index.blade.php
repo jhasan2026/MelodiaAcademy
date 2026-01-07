@@ -1,4 +1,6 @@
+{{-- Remove this if your project already loads Tailwind via Vite/Mix --}}
 <script src="https://cdn.tailwindcss.com"></script>
+
 <x-layout>
     <x-slot:heading>Assigned Courses</x-slot:heading>
 
@@ -57,6 +59,12 @@
 
                             <tbody class="divide-y divide-gray-100 bg-white">
                             @forelse($assignedCourses as $assigned)
+                                @php
+                                    $instUser = $assigned->instructor?->user;
+                                    $instName = $instUser ? trim($instUser->first_name . ' ' . $instUser->last_name) : '—';
+                                    $instInitial = $instUser ? strtoupper(mb_substr($instUser->first_name ?? $instUser->last_name ?? '—', 0, 1)) : '—';
+                                @endphp
+
                                 <tr class="transition hover:bg-gray-50">
                                     <td class="px-5 sm:px-6 py-4">
                                         <div class="flex items-center gap-3">
@@ -78,12 +86,12 @@
                                         <div class="flex items-center gap-3">
                                             <div class="h-9 w-9 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center">
                                                 <span class="text-xs font-semibold text-gray-700">
-                                                    {{ strtoupper(mb_substr($assigned->instructor->first_name, 0, 1)) }}
+                                                    {{ $instInitial }}
                                                 </span>
                                             </div>
                                             <div class="min-w-0">
                                                 <p class="truncate text-sm font-semibold text-gray-900">
-                                                    {{ $assigned->instructor->first_name . " " . $assigned->instructor->last_name }}
+                                                    {{ $instName }}
                                                 </p>
                                                 <p class="text-xs text-gray-500">Instructor</p>
                                             </div>

@@ -1,4 +1,6 @@
+{{-- Remove this if your project already loads Tailwind via Vite/Mix --}}
 <script src="https://cdn.tailwindcss.com"></script>
+
 <x-layout>
     <x-slot:heading>Edit Assigned Course</x-slot:heading>
 
@@ -25,41 +27,47 @@
                         @method('PUT')
 
                         <div class="grid grid-cols-1 gap-6">
+                            {{-- Course --}}
                             <div>
-                                <label class="block text-sm font-semibold text-gray-900 mb-2">
-                                    Select Course
-                                </label>
+                                <label class="block text-sm font-semibold text-gray-900 mb-2">Select Course</label>
+
                                 <select
                                     name="course_id"
                                     class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-xs transition focus:outline-none focus:ring-2 focus:ring-gray-200"
                                 >
+                                    <option value="" disabled>-- Select a course --</option>
+
                                     @foreach($courses as $course)
                                         <option value="{{ $course->id }}"
-                                            {{ $assignedCourse->course_id == $course->id ? 'selected' : '' }}>
+                                            {{ old('course_id', $assignedCourse->course_id) == $course->id ? 'selected' : '' }}>
                                             {{ $course->name }}
                                         </option>
                                     @endforeach
                                 </select>
+
                                 @error('course_id')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
+                            {{-- Instructor --}}
                             <div>
-                                <label class="block text-sm font-semibold text-gray-900 mb-2">
-                                    Select Instructor
-                                </label>
+                                <label class="block text-sm font-semibold text-gray-900 mb-2">Select Instructor</label>
+
                                 <select
                                     name="instructor_id"
                                     class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-xs transition focus:outline-none focus:ring-2 focus:ring-gray-200"
                                 >
+                                    <option value="" disabled>-- Select an instructor --</option>
+
                                     @foreach($instructors as $instructor)
                                         <option value="{{ $instructor->id }}"
-                                            {{ $assignedCourse->instructor_id == $instructor->id ? 'selected' : '' }}>
-                                            {{ $instructor->first_name . ' ' . $instructor->last_name }}
+                                            {{ old('instructor_id', $assignedCourse->instructor_id) == $instructor->id ? 'selected' : '' }}>
+                                            {{ $instructor->user->first_name }} {{ $instructor->user->last_name }}
                                         </option>
                                     @endforeach
                                 </select>
+
                                 @error('instructor_id')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror

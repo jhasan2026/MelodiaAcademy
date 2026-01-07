@@ -24,6 +24,6 @@ class AttendanceSession extends Model
 
     public function records()
     {
-        return $this->hasMany(AttendanceRecord::class);
+        return $this->hasMany(AttendanceRecord::class, 'attendance_session_id');
     }
 }

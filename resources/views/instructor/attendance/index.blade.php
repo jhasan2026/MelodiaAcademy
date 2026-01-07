@@ -8,6 +8,8 @@
 
     <x-sidenavbar-container>
 
+            <x-sidenavbar :course="$course"></x-sidenavbar>
+
         <div class="mx-auto w-full max-w-7xl px-6 py-6">
 
             <!-- Header -->

@@ -1,4 +1,6 @@
+{{-- Remove this if your project already loads Tailwind via Vite/Mix --}}
 <script src="https://cdn.tailwindcss.com"></script>
+
 <x-layout>
     <x-slot:heading>Assign Course</x-slot:heading>
 
@@ -22,29 +24,51 @@
                         @csrf
 
                         <div class="grid grid-cols-1 gap-6">
+                            {{-- Course --}}
                             <div>
                                 <label class="block text-sm font-semibold text-gray-900 mb-2">Select Course</label>
                                 <div class="relative">
-                                    <select name="course_id" class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-xs transition focus:outline-none focus:ring-2 focus:ring-gray-200">
+                                    <select
+                                        name="course_id"
+                                        class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-xs transition focus:outline-none focus:ring-2 focus:ring-gray-200"
+                                    >
+                                        <option value="" disabled {{ old('course_id') ? '' : 'selected' }}>
+                                            -- Select a course --
+                                        </option>
+
                                         @foreach($courses as $course)
-                                            <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                            <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                                                {{ $course->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
+
                                 @error('course_id')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
+                            {{-- Instructor --}}
                             <div>
                                 <label class="block text-sm font-semibold text-gray-900 mb-2">Select Instructor</label>
                                 <div class="relative">
-                                    <select name="instructor_id" class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-xs transition focus:outline-none focus:ring-2 focus:ring-gray-200">
+                                    <select
+                                        name="instructor_id"
+                                        class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-xs transition focus:outline-none focus:ring-2 focus:ring-gray-200"
+                                    >
+                                        <option value="" disabled {{ old('instructor_id') ? '' : 'selected' }}>
+                                            -- Select an instructor --
+                                        </option>
+
                                         @foreach($instructors as $instructor)
-                                            <option value="{{ $instructor->id }}">{{ $instructor->first_name . " " . $instructor->last_name }}</option>
+                                            <option value="{{ $instructor->id }}" {{ old('instructor_id') == $instructor->id ? 'selected' : '' }}>
+                                                {{ $instructor->user->first_name }} {{ $instructor->user->last_name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
+
                                 @error('instructor_id')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror

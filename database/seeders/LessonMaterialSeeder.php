@@ -11,9 +11,12 @@ class LessonMaterialSeeder extends Seeder
     public function run(): void
     {
         // If you already seed courses elsewhere, you can remove this.
-        $courses = Course::query()->count()
-            ? Course::query()->inRandomOrder()->limit(5)->get()
-            : Course::factory()->count(5)->create();
+        $courseIds = [1, 2, 11];
+
+        $courses = Course::whereIn('id', $courseIds)
+            ->inRandomOrder()
+            ->limit(5) // optional, max will be 3 anyway
+            ->get();
 
         foreach ($courses as $course) {
             LessonMaterial::factory()
@@ -22,5 +25,6 @@ class LessonMaterialSeeder extends Seeder
                     'course_id' => $course->id,
                 ]);
         }
+
     }
 }

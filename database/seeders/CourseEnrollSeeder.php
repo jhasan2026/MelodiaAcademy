@@ -8,12 +8,11 @@ use Illuminate\Database\Seeder;
 
 class CourseEnrollSeeder extends Seeder
 {
-    public function run(): void
-    {
-        // student_id = 1 → first 5 courses
-        $coursesForStudent1 = Course::take(2)->pluck('id');
+    public function run(): void{
+        // Pending
+        $pendingCourses = Course::orderBy('id')->take(2)->pluck('id');
 
-        foreach ($coursesForStudent1 as $courseId) {
+        foreach ($pendingCourses as $courseId) {
             CourseEnroll::create([
                 'course_id'     => $courseId,
                 'student_id'    => 1,
@@ -21,9 +20,10 @@ class CourseEnrollSeeder extends Seeder
             ]);
         }
 
-        $coursesForStudent1 = Course::skip(2)->take(2)->pluck('id');
+        // Approved
+        $approvedCourses = Course::orderBy('id')->skip(2)->take(2)->pluck('id');
 
-        foreach ($coursesForStudent1 as $courseId) {
+        foreach ($approvedCourses as $courseId) {
             CourseEnroll::create([
                 'course_id'     => $courseId,
                 'student_id'    => 1,
@@ -31,9 +31,10 @@ class CourseEnrollSeeder extends Seeder
             ]);
         }
 
-        $coursesForStudent1 = Course::skip(4)->take(1)->pluck('id');
+        // Rejected
+        $rejectedCourse = Course::orderBy('id')->skip(4)->take(1)->pluck('id');
 
-        foreach ($coursesForStudent1 as $courseId) {
+        foreach ($rejectedCourse as $courseId) {
             CourseEnroll::create([
                 'course_id'     => $courseId,
                 'student_id'    => 1,
@@ -41,28 +42,36 @@ class CourseEnrollSeeder extends Seeder
             ]);
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | STUDENT 2
+        |--------------------------------------------------------------------------
+        | Next 5 courses:
+        |  - 2 approved
+        |  - 3 rejected
+        */
 
-        // student_id = 2 → next 5 courses
-        $coursesForStudent2 = Course::skip(5)->take(2)->pluck('id');
+        // Approved
+        $approvedCoursesStudent2 = Course::orderBy('id')->skip(5)->take(2)->pluck('id');
 
-        foreach ($coursesForStudent2 as $courseId) {
+        foreach ($approvedCoursesStudent2 as $courseId) {
             CourseEnroll::create([
                 'course_id'     => $courseId,
                 'student_id'    => 2,
                 'enroll_status' => 'approved',
             ]);
         }
-        $coursesForStudent3 = Course::skip(7)->take(3)->pluck('id');
 
-        foreach ($coursesForStudent2 as $courseId) {
+        // Rejected
+        $rejectedCoursesStudent2 = Course::orderBy('id')->skip(7)->take(3)->pluck('id');
+
+        foreach ($rejectedCoursesStudent2 as $courseId) {
             CourseEnroll::create([
                 'course_id'     => $courseId,
                 'student_id'    => 2,
                 'enroll_status' => 'rejected',
             ]);
         }
-
-
 
     }
 }

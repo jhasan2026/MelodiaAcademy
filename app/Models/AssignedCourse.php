@@ -25,6 +25,6 @@ class AssignedCourse extends Model
     // Relation to Instructor (User model)
     public function instructor()
     {
-        return $this->belongsTo(User::class, 'instructor_id');
+        return $this->belongsTo(Instructor::class, 'instructor_id');
     }
 }

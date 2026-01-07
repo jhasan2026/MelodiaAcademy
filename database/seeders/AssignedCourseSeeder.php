@@ -24,3 +24,4 @@ class AssignedCourseSeeder extends Seeder
         }
     }
 }
+
