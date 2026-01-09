@@ -22,12 +22,11 @@ class AttendanceSeeder extends Seeder
             'email' => 'instructor@test.com',
         ]);
 
-        // Course
-        $course = Course::factory()->create();
+
 
         // Assign course to instructor
         AssignedCourse::create([
-            'course_id' => $course->id,
+            'course_id' => 1,
             'instructor_id' => $instructor->id,
         ]);
 
@@ -37,7 +36,7 @@ class AttendanceSeeder extends Seeder
         // Enroll students
         foreach ($students as $student) {
             CourseEnroll::create([
-                'course_id' => $course->id,
+                'course_id' => 1,
                 'student_id' => $student->id,
                 'enroll_status' => 'approved',
             ]);
@@ -46,7 +45,7 @@ class AttendanceSeeder extends Seeder
         // Attendance sessions (last 5 days)
         for ($i = 0; $i < 5; $i++) {
             $session = AttendanceSession::create([
-                'course_id' => $course->id,
+                'course_id' => 1,
                 'attendance_date' => now()->subDays($i)->toDateString(),
                 'marked_by' => $instructor->id,
             ]);

@@ -8,11 +8,11 @@ use App\Http\Controllers\CourseEnrollController;
 use App\Http\Controllers\CourseTopicController;
 use App\Http\Controllers\InstructorAssignedCourse;
 use App\Http\Controllers\InstructorScheduleController;
-use App\Http\Controllers\LessonController;
 use App\Http\Controllers\LessonMaterialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\StudentAttendanceController;
 use App\Http\Controllers\StudentScheduleController;
 use App\Models\Course;
 use Illuminate\Support\Facades\Route;
@@ -103,6 +103,15 @@ Route::controller(CourseEnrollController::class)->group(function () {
     });
 
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('my_course/attendance', [StudentAttendanceController::class, 'index'])
+        ->name('student.attendance.index');
+
+    Route::get('my_course/attendance/{course}', [StudentAttendanceController::class, 'show'])
+        ->name('student.attendance.show');
+});
+
 
 
 Route::middleware(['auth'])->group(function () {
@@ -207,6 +216,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/assignments/{assignment}/submissions', [AssignmentController::class, 'submissions'])->name('assignments.submissions');
     Route::post('/assignments/{assignment}/submissions/{submission}/grade', [AssignmentSubmissionController::class, 'grade'])->name('assignments.grade');
 });
+
 
 
 

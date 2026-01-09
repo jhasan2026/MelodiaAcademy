@@ -9,12 +9,11 @@
     </x-nav-link>
 
     @if($courseId)
-{{--        <x-nav-link--}}
-{{--            href="{{ route('instructor.courses.students', $courseId) }}"--}}
-{{--            :active="request()->is('instructor_assigned_courses/*/students')">--}}
-{{--            Course Students--}}
-{{--        </x-nav-link>--}}
+        <x-nav-link
+            href="{{ route('student.attendance.show', $courseId) }}">
+            Course Attendances
+        </x-nav-link>
 
-{{--        --}}
+
     @endif
 </x-sidenavbar-inner>

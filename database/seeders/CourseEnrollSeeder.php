@@ -10,7 +10,8 @@ class CourseEnrollSeeder extends Seeder
 {
     public function run(): void
     {
-        // Get all course ids once (safe even if < 10)
+
+        // Get all course ids once
         $courseIds = Course::orderBy('id')->pluck('id')->values();
 
         // Helper to assign list of course ids to a student with status
@@ -29,7 +30,7 @@ class CourseEnrollSeeder extends Seeder
         };
 
         /**
-         * STUDENT 1
+         * STUDENT 1 (besides forced course 1)
          * first 5 courses:
          * - 2 pending
          * - 2 approved
@@ -47,5 +48,12 @@ class CourseEnrollSeeder extends Seeder
          */
         $assign(2, $courseIds->slice(5, 2)->all(), 'approved');
         $assign(2, $courseIds->slice(7, 3)->all(), 'rejected');
+
+        // ✅ Force: student_id 1 must be enrolled in course_id 1 (approved)
+        CourseEnroll::updateOrCreate(
+            ['student_id' => 1, 'course_id' => 1],
+            ['enroll_status' => 'approved']
+        );
+
     }
 }
